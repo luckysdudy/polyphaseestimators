@@ -1,8 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package poly;
 
 import Jama.Matrix;
@@ -10,7 +5,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import org.junit.*;
 import pubsim.VectorFunctions;
-import pubsim.distributions.GaussianNoise;
+import org.mckilliam.distributions.Gaussian;
 
 /**
  *
@@ -104,10 +99,8 @@ public class MaximumLikelihoodTest {
         double[] params = {0.1, 0.1, 0.1};
         int m = params.length-1;
 
-        PolynomialPhaseSignal siggen = new PolynomialPhaseSignal(n);
-        siggen.setParameters(params);
-        siggen.setNoiseGenerator(new GaussianNoise(0, 0.00000001));
-
+        PolynomialPhaseSignal siggen = new PolynomialPhaseSignal(n, new Gaussian(0, 0.00000001), params);
+ 
         siggen.generateReceivedSignal();
 
         MaximumLikelihood inst = new MaximumLikelihood(m,n);

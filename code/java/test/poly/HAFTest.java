@@ -1,6 +1,3 @@
-/*
- */
-
 package poly;
 
 import org.junit.After;
@@ -11,7 +8,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import pubsim.Complex;
 import pubsim.VectorFunctions;
-import pubsim.distributions.GaussianNoise;
+import org.mckilliam.distributions.Gaussian;
 
 /**
  *
@@ -68,7 +65,7 @@ public class HAFTest {
         Complex[] y = VectorFunctions.randomComplex(n);
         HAF instance = new HAF(m,n);
         int tau = instance.gettau()[0];
-        flanagan.complex.Complex[] result = instance.PPT2(VectorFunctions.simComplexArrayToFlanComplexArray(y),tau);
+        Complex[] result = instance.PPT2(y,tau);
         //System.out.print(VectorFunctions.print(result));
 
         //test first element is zero
@@ -77,8 +74,8 @@ public class HAFTest {
 
         //test last element
         Complex last = y[n-1].times(y[n - 1 - (int)Math.round(n/((double)m-1))].conjugate());
-        assertEquals(last.im(), result[result.length-1].getImag(), 0.0000001);
-        assertEquals(last.re(), result[result.length-1].getReal(), 0.0000001);
+        assertEquals(last.im(), result[result.length-1].im(), 0.0000001);
+        assertEquals(last.re(), result[result.length-1].re(), 0.0000001);
     }
 
     /**
@@ -92,9 +89,7 @@ public class HAFTest {
         double[] params = {0.3, 0.1, 0.002};
         int a = params.length;
 
-        PolynomialPhaseSignal siggen = new PolynomialPhaseSignal(n);
-        siggen.setParameters(params);
-        siggen.setNoiseGenerator(new GaussianNoise(0, 0.00001));
+        PolynomialPhaseSignal siggen = new PolynomialPhaseSignal(n, new Gaussian(0, 0.00001), params);
 
         siggen.generateReceivedSignal();
 
@@ -119,9 +114,7 @@ public class HAFTest {
         double[] params = {0.11, 0.05002, 0.0205, 0.0001};
         int m = params.length-1;
 
-        PolynomialPhaseSignal siggen = new PolynomialPhaseSignal(n);
-        siggen.setParameters(params);
-        siggen.setNoiseGenerator(new GaussianNoise(0, 0.00001));
+        PolynomialPhaseSignal siggen = new PolynomialPhaseSignal(n, new Gaussian(0, 0.00001), params);
 
         siggen.generateReceivedSignal();
 
@@ -146,9 +139,7 @@ public class HAFTest {
         double[] params = {0.11, 0.05002, 0.0205, 0.0001};
         int m = params.length-1;
 
-        PolynomialPhaseSignal siggen = new PolynomialPhaseSignal(n);
-        siggen.setParameters(params);
-        siggen.setNoiseGenerator(new GaussianNoise(0, 0.00001));
+        PolynomialPhaseSignal siggen = new PolynomialPhaseSignal(n, new Gaussian(0, 0.00001), params);
 
         siggen.generateReceivedSignal();
 
@@ -173,9 +164,7 @@ public class HAFTest {
         double[] params = {0.11, 0.05002, 0.0205, 1e-4, 1e-6, 1e-7};
         int m = params.length-1;
 
-        PolynomialPhaseSignal siggen = new PolynomialPhaseSignal(n);
-        siggen.setParameters(params);
-        siggen.setNoiseGenerator(new GaussianNoise(0, 0.0));
+        PolynomialPhaseSignal siggen = new PolynomialPhaseSignal(n, new Gaussian(0, 0.0), params);
 
         siggen.generateReceivedSignal();
 
@@ -197,24 +186,22 @@ public class HAFTest {
         double[] params = {0.11, 0.05002, 0.0205, 0.0001};
         int m = params.length-1;
 
-        PolynomialPhaseSignal siggen = new PolynomialPhaseSignal(n);
-        siggen.setParameters(params);
-        siggen.setNoiseGenerator(new GaussianNoise(0, 0.00001));
+        PolynomialPhaseSignal siggen = new PolynomialPhaseSignal(n, new Gaussian(0, 0.00001), params);
 
         siggen.generateReceivedSignal();
-        flanagan.complex.Complex[] z = new flanagan.complex.Complex[n];
-        for (int i = 0; i < n; i++) z[i] = new flanagan.complex.Complex(siggen.real()[i], siggen.imag()[i]);
+        Complex[] z = new Complex[n];
+        for (int i = 0; i < n; i++) z[i] = new Complex(siggen.real()[i], siggen.imag()[i]);
         
         HAF inst = new HAF(m,n);
        
         /** test highest order parameter m */
-        flanagan.complex.Complex[] fft = inst.FFTHAF(z,m);
+        Complex[] fft = inst.FFTHAF(z,m);
         double f = 0.0;
         double fstep = 1.0 / fft.length;
         for(int i = 0; i < fft.length; i++){
             //System.out.println(fft[i].squareAbs() + ", " + inst.calculateObjective(f, z, m));
-            assertEquals(fft[i].squareAbs(), inst.calculateObjective(f, z, m), tol);
-            f-=fstep;
+            assertEquals(fft[i].abs2(), inst.calculateObjective(f, z, m), tol);
+            f+=fstep;
         }
         
         /** test parameter m-1 */
@@ -223,8 +210,8 @@ public class HAFTest {
         fstep = 1.0 / fft.length;
         for(int i = 0; i < fft.length; i++){
             //System.out.println(fft[i].squareAbs() + ", " + inst.calculateObjective(f, z, m));
-            assertEquals(fft[i].squareAbs(), inst.calculateObjective(f, z, m-1), tol);
-            f-=fstep;
+            assertEquals(fft[i].abs2(), inst.calculateObjective(f, z, m-1), tol);
+            f+=fstep;
         }
         
     }

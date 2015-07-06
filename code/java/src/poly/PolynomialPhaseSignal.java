@@ -18,11 +18,12 @@ public class PolynomialPhaseSignal {
     final protected int n;
     final protected RealRandomVariable noise;
     
-    public PolynomialPhaseSignal(int N, RealRandomVariable noise){
+    public PolynomialPhaseSignal(int N, RealRandomVariable noise, double[] params){
         this.n = N;
         real = new double[n];
         imag = new double[n];
         this.noise = noise;
+        this.params = params;
     }
     public Double[] generateReceivedSignal() {
         for(int t = 0; t < n; t++){

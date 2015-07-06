@@ -10,7 +10,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import pubsim.Complex;
 import static pubsim.VectorFunctions.print;
-import pubsim.distributions.GaussianNoise;
+import org.mckilliam.distributions.Gaussian;
 
 /**
  *
@@ -50,11 +50,11 @@ public class CPFTest {
         double[] real = {1.0,2.0,3.0};
         double[] imag = {1.0,2.0,3.0};
         instance.estimate(real, imag);
-        assertTrue( (instance.z(-2) - new Complex(0,0)).abs() < tol );
-        assertTrue( (instance.z(-1) - new Complex(1,1)).abs() < tol );
-        assertTrue( (instance.z(0) - new Complex(2,2)).abs() < tol );
-        assertTrue( (instance.z(1) - new Complex(3,3)).abs() < tol );
-        assertTrue( (instance.z(2) - new Complex(0,0)).abs() < tol );
+        assertTrue( (instance.z(-2).minus(new Complex(0,0))).abs() < tol );
+        assertTrue( (instance.z(-1).minus(new Complex(1,1))).abs() < tol );
+        assertTrue( (instance.z(0).minus(new Complex(2,2))).abs() < tol );
+        assertTrue( (instance.z(1).minus(new Complex(3,3))).abs() < tol );
+        assertTrue( (instance.z(2).minus(new Complex(0,0))).abs() < tol );
     }
     
      /**
@@ -73,9 +73,7 @@ public class CPFTest {
         double[] params = inst.transformToStandardBasis(oparams);
         System.out.println(print(params));
         
-        PolynomialPhaseSignal siggen = new PolynomialPhaseSignal(N);
-        siggen.setParameters(params);
-        siggen.setNoiseGenerator(new GaussianNoise(0, 0));
+        PolynomialPhaseSignal siggen = new PolynomialPhaseSignal(N, new Gaussian(0, 0), params);
         siggen.generateReceivedSignal();
         inst.estimate(siggen.real(), siggen.imag());
         
@@ -99,9 +97,7 @@ public class CPFTest {
         CPF inst = new CPF(N,10*N);
         double[] params = inst.transformToStandardBasis(oparams);
         
-        PolynomialPhaseSignal siggen = new PolynomialPhaseSignal(N);
-        siggen.setParameters(params);
-        siggen.setNoiseGenerator(new GaussianNoise(0, 0));
+        PolynomialPhaseSignal siggen = new PolynomialPhaseSignal(N, new Gaussian(0, 0), params);
         siggen.generateReceivedSignal();
         
         double[] phat = inst.estimate(siggen.real(), siggen.imag());

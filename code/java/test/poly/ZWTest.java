@@ -1,5 +1,3 @@
-/*
- */
 package poly;
 
 import org.junit.After;
@@ -46,9 +44,7 @@ public class ZWTest {
         double[] params = {0.11, 0.05002, 0.0205, 0.0001};
         int m = params.length-1;
 
-        PolynomialPhaseSignal siggen = new PolynomialPhaseSignal(n);
-        siggen.setParameters(params);
-        siggen.setNoiseGenerator(new Gaussian(0, 0.000001));
+        PolynomialPhaseSignal siggen = new PolynomialPhaseSignal(n, new Gaussian(0, 0.000001), params);
 
         siggen.generateReceivedSignal();
 
@@ -72,9 +68,7 @@ public class ZWTest {
         double[] params = {0.11, 0.1, 0.1, -1.0/24};
         int m = params.length-1;
 
-        PolynomialPhaseSignal siggen = new PolynomialPhaseSignal(n);
-        siggen.setParameters(params);
-        siggen.setNoiseGenerator(new Gaussian(0, 0.00001));
+        PolynomialPhaseSignal siggen = new PolynomialPhaseSignal(n, new Gaussian(0, 0.000001), params);
 
         siggen.generateReceivedSignal();
         

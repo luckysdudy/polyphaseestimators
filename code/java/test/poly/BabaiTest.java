@@ -1,15 +1,7 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package poly;
 
-import poly.PolynomialPhaseEstimatorInterface;
-import poly.BabaiTest;
-import poly.PolynomialPhaseSignal;
 import Jama.Matrix;
-import pubsim.distributions.GaussianNoise;
+import org.mckilliam.distributions.Gaussian;
 import org.mckilliam.lattices.Vnmstar.VnmStar;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -58,9 +50,7 @@ public class BabaiTest {
         Matrix M = VnmStar.getGeneratorMatrix(m, n-m-1);
         System.out.println(VectorFunctions.print(M));
 
-        PolynomialPhaseSignal siggen = new PolynomialPhaseSignal(n);
-        siggen.setParameters(params);
-        siggen.setNoiseGenerator(new GaussianNoise(0, 0.00001));
+        PolynomialPhaseSignal siggen = new PolynomialPhaseSignal(n,new Gaussian(0, 0.00001),params);
 
         siggen.generateReceivedSignal();
         PolynomialPhaseEstimatorInterface inst = new Babai(m,n);

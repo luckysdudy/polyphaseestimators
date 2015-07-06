@@ -151,7 +151,7 @@ public class PHAF extends AbstractPolynomialPhaseEstimator {
                     maxp = p;
                     fhat = f;
                 }
-                f -= fstep;
+                f += fstep;
             }
             //refine using Brent's method
             SingleVariateFunction func = new SingleVariateFunction() {

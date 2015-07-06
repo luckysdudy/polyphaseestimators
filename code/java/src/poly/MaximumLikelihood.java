@@ -7,7 +7,6 @@ import org.mckilliam.optimisation.FunctionAndDerivatives;
 import org.mckilliam.optimisation.NewtonRaphson;
 import pubsim.Complex;
 import pubsim.VectorFunctions;
-import pubsim.fes.PeriodogramFFTEstimator;
 
 /**
  * Implements a (approximate) maximum likelihood estimator for
@@ -18,7 +17,7 @@ import pubsim.fes.PeriodogramFFTEstimator;
 public class MaximumLikelihood extends AbstractPolynomialPhaseEstimator{
 
     final protected int N;
-    final protected PeriodogramFFTEstimator freqest;
+    final protected PeriodogramFrequencyEstimator freqest;
 
     int samples[];
     final double[] realp, imagp;
@@ -36,7 +35,7 @@ public class MaximumLikelihood extends AbstractPolynomialPhaseEstimator{
         realp = new double[N];
         imagp = new double[N];
         z = new Complex[N];
-        freqest = new PeriodogramFFTEstimator(N);
+        freqest = new PeriodogramFrequencyEstimator(N);
         for(int i = 0; i < samples.length; i++)
             samples[i] = (int)Math.round(4*Math.pow( N, i+2 ));
     }

@@ -10,8 +10,8 @@ public class CircularNoisePolynomialPhaseSignal extends PolynomialPhaseSignal{
 
     Double[] phasearray = new Double[0];
 
-    public CircularNoisePolynomialPhaseSignal(int N, CircularRandomVariable noise){
-        super(N, noise);
+    public CircularNoisePolynomialPhaseSignal(int N, CircularRandomVariable noise, double[] params){
+        super(N, noise, params);
     }
     
     /**

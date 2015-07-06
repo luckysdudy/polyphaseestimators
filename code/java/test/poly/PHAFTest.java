@@ -6,7 +6,7 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import pubsim.distributions.GaussianNoise;
+import org.mckilliam.distributions.Gaussian;
 
 /**
  *
@@ -44,9 +44,7 @@ public class PHAFTest {
         double[] params = {0.11, 0.05002, 0.0205, 0.0001};
         int m = params.length-1;
 
-        PolynomialPhaseSignal siggen = new PolynomialPhaseSignal(n);
-        siggen.setParameters(params);
-        siggen.setNoiseGenerator(new GaussianNoise(0, 0.000001));
+        PolynomialPhaseSignal siggen = new PolynomialPhaseSignal(n, new Gaussian(0, 0.000001), params);
         siggen.generateReceivedSignal();
         
         HAF tester = new HAF(m,n);
@@ -73,9 +71,7 @@ public class PHAFTest {
         double[] params = {0.11, 0.05002, 0.0205, 0.0001};
         int m = params.length-1;
 
-        PolynomialPhaseSignal siggen = new PolynomialPhaseSignal(n);
-        siggen.setParameters(params);
-        siggen.setNoiseGenerator(new GaussianNoise(0, 0.000001));
+        PolynomialPhaseSignal siggen = new PolynomialPhaseSignal(n, new Gaussian(0, 0.000001), params);
         siggen.generateReceivedSignal();
         
         int[][] tau = new int[2][m-2];
@@ -101,9 +97,7 @@ public class PHAFTest {
         double[] params = {0.11, 0.05002, 0.0205, 0.0001};
         int m = params.length-1;
 
-        PolynomialPhaseSignal siggen = new PolynomialPhaseSignal(n);
-        siggen.setParameters(params);
-        siggen.setNoiseGenerator(new GaussianNoise(0, 0.000001));
+        PolynomialPhaseSignal siggen = new PolynomialPhaseSignal(n, new Gaussian(0, 0.000001), params);
         siggen.generateReceivedSignal();
         
         int[][] tau = new int[3][m-2];
@@ -127,9 +121,7 @@ public class PHAFTest {
         double[] params = {0.11, 0.05002, 0.0205, 0.0001};
         int m = params.length-1;
 
-        PolynomialPhaseSignal siggen = new PolynomialPhaseSignal(n);
-        siggen.setParameters(params);
-        siggen.setNoiseGenerator(new GaussianNoise(0, 0.000001));
+        PolynomialPhaseSignal siggen = new PolynomialPhaseSignal(n, new Gaussian(0, 0.000001), params);
         siggen.generateReceivedSignal();
         
         int[][] tau = new int[3][m-2];

@@ -1,6 +1,6 @@
 package poly;
 
-import pubsim.distributions.GaussianNoise;
+import org.mckilliam.distributions.Gaussian;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -47,9 +47,7 @@ public class KitchenTest {
         double[] params = {0.1, 0.2, 0.05};
         int m = params.length-1;
 
-        PolynomialPhaseSignal siggen = new PolynomialPhaseSignal(n);
-        siggen.setParameters(params);
-        siggen.setNoiseGenerator(new GaussianNoise(0, 0.000001));
+        PolynomialPhaseSignal siggen = new PolynomialPhaseSignal(n, new Gaussian(0, 0.000001), params);
 
         siggen.generateReceivedSignal();
 
@@ -73,9 +71,7 @@ public class KitchenTest {
         double[] params = {0.1, 0.2, 0.05};
         int a = params.length;
 
-        PolynomialPhaseSignal siggen = new PolynomialPhaseSignal(n);
-        siggen.setParameters(params);
-        siggen.setNoiseGenerator(new GaussianNoise(0, 0.000001));
+        PolynomialPhaseSignal siggen = new PolynomialPhaseSignal(n, new Gaussian(0, 0.000001), params);;
 
         siggen.generateReceivedSignal();
 

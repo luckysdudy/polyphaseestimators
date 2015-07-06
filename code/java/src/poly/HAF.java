@@ -112,7 +112,7 @@ public class HAF extends AbstractPolynomialPhaseEstimator {
                 maxp = p;
                 fhat = f;
             }
-            f-=fstep;
+            f+=fstep;
         }
         fhat = refine(fhat, d, maxp);
         

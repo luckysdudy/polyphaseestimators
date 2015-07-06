@@ -1,13 +1,9 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package poly;
 
 import org.junit.*;
 import static org.junit.Assert.*;
 import pubsim.VectorFunctions;
-import pubsim.distributions.circular.WrappedUniform;
+import org.mckilliam.distributions.circular.WrappedUniform;
 
 /**
  *
@@ -42,13 +38,9 @@ public class CircularNoisePolynomialPhaseSignalTest {
     public void testGenerateReceivedSignal() {
         System.out.println("generateReceivedSignal");
         int N = 5;
-        CircularNoisePolynomialPhaseSignal instance = new CircularNoisePolynomialPhaseSignal(N);
-
-        WrappedUniform noise = new WrappedUniform(0, 0.01);
-        instance.setNoiseGenerator(noise);
-
         double[] p = {0.0, 0.0, 0.0};
-        instance.setParameters(p);
+        
+        CircularNoisePolynomialPhaseSignal instance = new CircularNoisePolynomialPhaseSignal(N, new WrappedUniform(0, 0.01), p);
 
         instance.generateReceivedSignal();
         System.out.println(VectorFunctions.print(instance.real()));

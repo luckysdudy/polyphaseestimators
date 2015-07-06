@@ -1,6 +1,3 @@
-/*
- * @author Robby McKilliam
- */
 package poly;
 
 import org.junit.After;
@@ -10,7 +7,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import pubsim.VectorFunctions;
-import pubsim.distributions.GaussianNoise;
+import org.mckilliam.distributions.Gaussian;
 
 /**
  *
@@ -49,9 +46,7 @@ public class PCPFHAFTest {
         double[] params = {0.11, 0.05002, 0.0205, 1e-5, 1e-6};
         int m = params.length-1;
 
-        PolynomialPhaseSignal siggen = new PolynomialPhaseSignal(n);
-        siggen.setParameters(params);
-        siggen.setNoiseGenerator(new GaussianNoise(0, 0.000001));
+        PolynomialPhaseSignal siggen = new PolynomialPhaseSignal(n, new Gaussian(0, 0.000001), params);
 
         siggen.generateReceivedSignal();
       
@@ -79,9 +74,7 @@ public class PCPFHAFTest {
         double[] params = {0.11, 0.05002, 0.0205, 1e-5, 1e-6, 1e-7};
         int m = params.length-1;
 
-        PolynomialPhaseSignal siggen = new PolynomialPhaseSignal(n);
-        siggen.setParameters(params);
-        siggen.setNoiseGenerator(new GaussianNoise(0, 0.000001));
+        PolynomialPhaseSignal siggen = new PolynomialPhaseSignal(n, new Gaussian(0, 0.000001), params);
 
         siggen.generateReceivedSignal();
       
@@ -109,9 +102,7 @@ public class PCPFHAFTest {
         double[] params = {0.25, 0.25, 6.0e-4, 1.0e-6, 1.32e-9, 1.32e-12};
         int m = params.length-1;
 
-        PolynomialPhaseSignal siggen = new PolynomialPhaseSignal(n);
-        siggen.setParameters(params);
-        siggen.setNoiseGenerator(new GaussianNoise(0, 0.000001));
+        PolynomialPhaseSignal siggen = new PolynomialPhaseSignal(n, new Gaussian(0, 0.000001), params);
 
         siggen.generateReceivedSignal();
       

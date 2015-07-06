@@ -2,7 +2,6 @@ package poly;
 
 import pubsim.Util;
 import pubsim.VectorFunctions;
-import pubsim.bearing.SampleCircularMean;
 
 /**
  * Implementation of Kitchen's polynomial phase estimate.
@@ -50,8 +49,13 @@ public class Kitchen extends AbstractPolynomialPhaseEstimator{
         //otherwise the estimator needs the phase parameter bounded,
         //which is really silly.
         if(M == 0){
-            SampleCircularMean vm = new SampleCircularMean();
-            return vm.estimateBearing(y);
+            double csum = 0.0, ssum = 0.0;
+            double twopi = 2.0 * Math.PI;
+            for(int i = 0; i < y.length; i++){
+                csum += Math.cos(twopi*y[i]);
+                ssum += Math.sin(twopi*y[i]);
+            }
+            return Math.atan2(ssum, csum)/twopi;
         }
 
         double[] d = VectorFunctions.mthDifference(y, M);
