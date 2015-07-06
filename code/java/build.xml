@@ -6,7 +6,7 @@
 
   <target name="init">
     <path id="build.classpath">
-      <fileset dir="${base.dir}/lib">
+      <fileset dir="${base.dir}/../lib">
 	<include name="*.jar" />
 	<exclude name="Poly.jar" />
       </fileset>
@@ -22,7 +22,7 @@
       <include name="src/**/*.java"   />
       <include name="test/**/*.java"   />
     </javac>
-    <jar destfile="${base.dir}/lib/Poly.jar">
+    <jar destfile="${base.dir}/../lib/Poly.jar">
       <fileset dir="src/"/>
       <fileset dir="test/"/>
       <fileset dir="build/"/>
@@ -38,7 +38,7 @@
   <target name="test" depends="init">
     <junit printsummary="yes">
       <classpath>
-	<fileset dir="${base.dir}/lib">
+	<fileset dir="${base.dir}/../lib">
 	  <include name="*.jar" />
 	</fileset>
       </classpath>
