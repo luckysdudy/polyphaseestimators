@@ -1,11 +1,6 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+package poly.bounds;
 
-package pubsim.poly.bounds;
-
-import pubsim.distributions.RealRandomVariable;
+import org.mckilliam.distributions.RealRandomVariable;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;

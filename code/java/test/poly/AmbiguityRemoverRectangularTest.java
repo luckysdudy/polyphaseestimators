@@ -1,6 +1,6 @@
 /*
  */
-package pubsim.poly;
+package poly;
 
 import org.junit.*;
 import static org.junit.Assert.*;

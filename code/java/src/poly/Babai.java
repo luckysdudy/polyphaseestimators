@@ -1,14 +1,14 @@
 /*
  */
-package pubsim.poly;
+package poly;
 
 import Jama.Matrix;
 import pubsim.VectorFunctions;
-import pubsim.lattices.NearestPointAlgorithmInterface;
-import pubsim.lattices.Vnmstar.HilbertMatrix;
-import pubsim.lattices.Vnmstar.VnmStar;
-import pubsim.lattices.reduction.LLL;
-import pubsim.lattices.reduction.LatticeReduction;
+import org.mckilliam.lattices.ClosestVectorInterface;
+import org.mckilliam.lattices.Vnmstar.HilbertMatrix;
+import org.mckilliam.lattices.Vnmstar.VnmStar;
+import org.mckilliam.lattices.reduction.LLL;
+import org.mckilliam.lattices.reduction.LatticeReduction;
 
 /**
  * Uses the Babai nearest plane algorithm
@@ -19,7 +19,7 @@ public class Babai extends AbstractPolynomialPhaseEstimator {
     final protected double[] ya,  p;
     final protected int n;
     final protected VnmStar lattice;
-    protected NearestPointAlgorithmInterface npalgorithm;
+    protected ClosestVectorInterface npalgorithm;
     final protected Matrix M,  K;
     
     public Babai(int m, int n){
@@ -33,7 +33,7 @@ public class Babai extends AbstractPolynomialPhaseEstimator {
     public Babai(int m, int n, LatticeReduction lr) {
         super(m);
         lattice = new VnmStar(m, n - m - 1);
-        npalgorithm = new pubsim.lattices.decoder.Babai(lattice, lr);
+        npalgorithm = new org.mckilliam.lattices.cvp.Babai(lattice, lr);
         ya = new double[n];
         p = new double[m+1];
         this.n = n;
@@ -50,7 +50,7 @@ public class Babai extends AbstractPolynomialPhaseEstimator {
         for (int i = 0; i < real.length; i++) {
             ya[i] = Math.atan2(imag[i], real[i]) / (2 * Math.PI);
         }
-        npalgorithm.nearestPoint(ya);
+        npalgorithm.closestPoint(ya);
         double[] u = npalgorithm.getIndex();
 
         double[] ymu = new double[ya.length];

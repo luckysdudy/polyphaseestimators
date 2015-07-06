@@ -1,10 +1,10 @@
 /*
  */
-package pubsim.poly;
+package poly;
 
-import pubsim.lattices.Lattice;
-import pubsim.lattices.decoder.Babai;
-import pubsim.lattices.reduction.None;
+import org.mckilliam.lattices.Lattice;
+import org.mckilliam.lattices.cvp.Babai;
+import org.mckilliam.lattices.reduction.None;
 
 /**
  * Disambiguates polynomial phase signals into the rectangular region in the paper

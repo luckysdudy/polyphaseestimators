@@ -1,6 +1,6 @@
-package pubsim.poly;
+package poly;
 
-import pubsim.poly.PolynomialPhaseSignal;
+import poly.PolynomialPhaseSignal;
 import pubsim.distributions.GaussianNoise;
 import junit.framework.TestCase;
 import pubsim.VectorFunctions;
@@ -34,11 +34,11 @@ public class PolynomialPhaseSignalTest extends TestCase {
         
         instance.generateReceivedSignal();
         
-        System.out.println("real = " + VectorFunctions.print(instance.getReal()));
-        System.out.println("imag = " + VectorFunctions.print(instance.getImag()));
+        System.out.println("real = " + VectorFunctions.print(instance.real()));
+        System.out.println("imag = " + VectorFunctions.print(instance.imag()));
         
-        assertEquals(VectorFunctions.distance_between(expreal, instance.getReal())<0.001, true);
-        assertEquals(VectorFunctions.distance_between(expimag, instance.getImag())<0.001, true);
+        assertEquals(VectorFunctions.distance_between(expreal, instance.real())<0.001, true);
+        assertEquals(VectorFunctions.distance_between(expimag, instance.imag())<0.001, true);
         
     }
 

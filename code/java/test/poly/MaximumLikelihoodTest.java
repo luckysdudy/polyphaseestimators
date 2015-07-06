@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package pubsim.poly;
+package poly;
 
 import Jama.Matrix;
 import static org.junit.Assert.assertEquals;
@@ -112,7 +112,7 @@ public class MaximumLikelihoodTest {
 
         MaximumLikelihood inst = new MaximumLikelihood(m,n);
 
-        double[] p = inst.estimate(siggen.getReal(), siggen.getImag());
+        double[] p = inst.estimate(siggen.real(), siggen.imag());
 
         System.out.println(VectorFunctions.print(p));
 

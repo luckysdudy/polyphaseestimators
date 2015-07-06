@@ -1,11 +1,11 @@
 /*
  */
-package pubsim.poly;
+package poly;
 
 import Jama.Matrix;
 import pubsim.Complex;
-import pubsim.optimisation.FunctionAndDerivatives;
-import pubsim.optimisation.NewtonRaphson;
+import org.mckilliam.optimisation.FunctionAndDerivatives;
+import org.mckilliam.optimisation.NewtonRaphson;
 
 /**
  * Implements O'Shea's cubic phase function estimator
@@ -94,11 +94,11 @@ public class CPF extends AbstractPolynomialPhaseEstimator {
     final protected Complex CP(int n, double w){
         Complex sum = Complex.zero;
         for(int m = 0; m <= (N-1)/2; m++)
-            sum = sum + (z(n+m) * z(n-m) * Complex.polar(1, -w*m*m));
+            sum = sum.plus(z(n+m).times(z(n-m)).times(Complex.polar(1, -w*m*m)));
         return sum;
     }
     
-    /** static verion of z for outsize use */
+    /** static version of z for outsize use */
     public static Complex z(int n, Complex[] d){
         int N =d.length;
         int nn = n + (N-1)/2;
@@ -111,7 +111,7 @@ public class CPF extends AbstractPolynomialPhaseEstimator {
         int N = d.length;
         Complex sum = Complex.zero;
         for(int m = 0; m <= (N-1)/2; m++)
-            sum = sum + (z(n+m,d) * z(n-m,d) * Complex.polar(1, -w*m*m));
+            sum = sum.plus(z(n+m,d).times(z(n-m,d)).times(Complex.polar(1, -w*m*m)));
         return sum;
     }
     
@@ -145,13 +145,13 @@ public class CPF extends AbstractPolynomialPhaseEstimator {
                 Complex f = CP(n,x.get(0,0));
                 Complex fd = CPdw(n,x.get(0,0));
                 Complex fdd = CPdw2(n,x.get(0,0));
-                double hes = 2*fd.abs() + 2*(fdd*f.conjugate()).re();
+                double hes = 2*fd.abs() + 2*(fdd.times(f.conjugate())).re();
                 return Matrix.identity(1,1).times(hes);
             }
             public Matrix gradient(Matrix x) {
                 Complex fd = CPdw(n,x.get(0,0));
                 Complex f = CP(n,x.get(0,0));
-                double grad = 2 * (fd * f.conjugate()).re();
+                double grad = 2 * (fd.times(f.conjugate())).re();
                 return Matrix.identity(1,1).times(grad);
             }
         };
@@ -197,7 +197,7 @@ public class CPF extends AbstractPolynomialPhaseEstimator {
     final protected Complex CPdw(int n, double w){
         Complex sum = Complex.zero;
         for(int m = 0; m <= (N-1)/2; m++)
-            sum = sum - (z(n+m) * z(n-m) * Complex.polar(1, -w*m*m) * (new Complex(0,m*m)));
+            sum = sum.minus(z(n+m).times(z(n-m)).times(Complex.polar(1, -w*m*m)).times(new Complex(0,m*m)));
         return sum;
     }
     
@@ -205,7 +205,7 @@ public class CPF extends AbstractPolynomialPhaseEstimator {
     final protected Complex CPdw2(int n, double w){
         Complex sum = Complex.zero;
         for(int m = 0; m <= (N-1)/2; m++)
-            sum = sum - (z(n+m) * z(n-m) * Complex.polar(1, -w*m*m) * (new Complex(m*m*m*m,0)));
+            sum = sum.minus(z(n+m).times(z(n-m)).times(Complex.polar(1, -w*m*m)).times(new Complex(m*m*m*m,0)));
         return sum;
     }
 

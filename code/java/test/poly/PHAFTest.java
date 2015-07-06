@@ -1,4 +1,4 @@
-package pubsim.poly;
+package poly;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -54,8 +54,8 @@ public class PHAFTest {
         tau[0] = tester.gettau();
         PHAF inst = new PHAF(m, n, tau, 10);
         
-        double testest = tester.estimate(siggen.getReal(), siggen.getImag())[m];
-        double est = inst.estimate(siggen.getReal(), siggen.getImag())[m];
+        double testest = tester.estimate(siggen.real(), siggen.imag())[m];
+        double est = inst.estimate(siggen.real(), siggen.imag())[m];
         
         System.out.println(est + ", " + testest);
         
@@ -83,7 +83,7 @@ public class PHAFTest {
         tau[1] = new int[] {n/m-2, n/m+2};
         PHAF inst = new PHAF(m, n, tau, 10);
         
-        double est = inst.estimate(siggen.getReal(), siggen.getImag())[m];
+        double est = inst.estimate(siggen.real(), siggen.imag())[m];
         
         System.out.println(est);
         
@@ -112,7 +112,7 @@ public class PHAFTest {
         tau[2] = new int[] {n/m-4, n/m+4};
         PHAF inst = new PHAF(m, n, tau, 10);
         
-        double est = inst.estimate(siggen.getReal(), siggen.getImag())[m];
+        double est = inst.estimate(siggen.real(), siggen.imag())[m];
         
         System.out.println(est);
         
@@ -139,8 +139,8 @@ public class PHAFTest {
         PHAF inst = new PHAF(m, n, tau);
         PHAF.PHAFfft instfft = new PHAF.PHAFfft(m, n, tau);
         
-        double est = inst.estimate(siggen.getReal(), siggen.getImag())[m];
-        double estfft = instfft.estimate(siggen.getReal(), siggen.getImag())[m];
+        double est = inst.estimate(siggen.real(), siggen.imag())[m];
+        double estfft = instfft.estimate(siggen.real(), siggen.imag())[m];
         
         System.out.println(est + ", " + estfft);
         

@@ -1,10 +1,7 @@
-/*
- */
-package pubsim.poly;
+package poly;
 
 import Jama.Matrix;
 import pubsim.Complex;
-import flanagan.math.FourierTransform;
 import static pubsim.Util.factorial;
 import pubsim.VectorFunctions;
 

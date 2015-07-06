@@ -1,7 +1,7 @@
 /*
  * @author Robby McKilliam
  */
-package pubsim.poly;
+package poly;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -58,7 +58,7 @@ public class PCPFHAFTest {
         int[][] tau = { {3}, {5} };
         PCPFHAF inst = new PCPFHAF(m,n,tau);
 
-        double[] p = inst.estimate(siggen.getReal(), siggen.getImag());
+        double[] p = inst.estimate(siggen.real(), siggen.imag());
 
         System.out.println(VectorFunctions.print(params));
         System.out.println(VectorFunctions.print(p));
@@ -88,7 +88,7 @@ public class PCPFHAFTest {
         int[][] tau = { {3,5}, {4,4} };
         PCPFHAF inst = new PCPFHAF(m,n,tau);
 
-        double[] p = inst.estimate(siggen.getReal(), siggen.getImag());
+        double[] p = inst.estimate(siggen.real(), siggen.imag());
 
         System.out.println(VectorFunctions.print(params));
         System.out.println(VectorFunctions.print(p));
@@ -118,7 +118,7 @@ public class PCPFHAFTest {
         int[][] tau = { {20,20}, {15, 25}, {17, 23}, {13,29} };
         PCPFHAF inst = new PCPFHAF(m,n,tau);
 
-        double[] p = inst.estimate(siggen.getReal(), siggen.getImag());
+        double[] p = inst.estimate(siggen.real(), siggen.imag());
 
         System.out.println(VectorFunctions.print(params));
         System.out.println(VectorFunctions.print(p));

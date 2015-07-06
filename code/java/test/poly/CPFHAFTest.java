@@ -1,6 +1,6 @@
 /*
  */
-package pubsim.poly;
+package poly;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -56,8 +56,8 @@ public class CPFHAFTest {
 //        CPFHAF inst = new CPFHAF(m,n);
 //        CPF test = new CPF(n);
 //
-//        double[] pinst = inst.estimate(siggen.getReal(), siggen.getImag());
-//        double[] ptest = inst.estimate(siggen.getReal(), siggen.getImag());
+//        double[] pinst = inst.estimate(siggen.real(), siggen.imag());
+//        double[] ptest = inst.estimate(siggen.real(), siggen.imag());
 //
 //        assertEquals(pinst[3], ptest[3],tol);
 //        assertEquals(pinst[2], ptest[2],tol);
@@ -84,7 +84,7 @@ public class CPFHAFTest {
 
         CPFHAF inst = new CPFHAF(m,n);
 
-        double[] p = inst.estimate(siggen.getReal(), siggen.getImag());
+        double[] p = inst.estimate(siggen.real(), siggen.imag());
 
         System.out.println(VectorFunctions.print(params));
         System.out.println(VectorFunctions.print(p));
@@ -113,7 +113,7 @@ public class CPFHAFTest {
 
         CPFHAF inst = new CPFHAF(m,n);
 
-        double[] p = inst.estimate(siggen.getReal(), siggen.getImag());
+        double[] p = inst.estimate(siggen.real(), siggen.imag());
 
         System.out.println(VectorFunctions.print(params));
         System.out.println(VectorFunctions.print(p));
@@ -143,7 +143,7 @@ public class CPFHAFTest {
         int[] tau = {3, 7};
         CPFHAF inst = new CPFHAF(m,n,tau);
 
-        double[] p = inst.estimate(siggen.getReal(), siggen.getImag());
+        double[] p = inst.estimate(siggen.real(), siggen.imag());
 
         System.out.println(VectorFunctions.print(params));
         System.out.println(VectorFunctions.print(p));

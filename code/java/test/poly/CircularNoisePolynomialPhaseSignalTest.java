@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package pubsim.poly;
+package poly;
 
 import org.junit.*;
 import static org.junit.Assert.*;
@@ -51,11 +51,11 @@ public class CircularNoisePolynomialPhaseSignalTest {
         instance.setParameters(p);
 
         instance.generateReceivedSignal();
-        System.out.println(VectorFunctions.print(instance.getReal()));
-        System.out.println(VectorFunctions.print(instance.getImag()));
+        System.out.println(VectorFunctions.print(instance.real()));
+        System.out.println(VectorFunctions.print(instance.imag()));
         
         instance.generateReceivedSignal();
-        System.out.println(VectorFunctions.print(instance.getReal()));
-        System.out.println(VectorFunctions.print(instance.getImag()));
+        System.out.println(VectorFunctions.print(instance.real()));
+        System.out.println(VectorFunctions.print(instance.imag()));
     }
 }

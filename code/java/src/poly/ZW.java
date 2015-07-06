@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package pubsim.poly;
+package poly;
 
 import bignums.BigInteger;
 import bignums.BigRational;
@@ -33,16 +33,18 @@ public class ZW extends HAFSimpleDiversity {
         BigRational f2 = new BigRational(f2d, 30);
         BigInteger a = new BigInteger(Integer.toString(tau1)).pow(P - 1);
         BigInteger b = new BigInteger(Integer.toString(tau2)).pow(P - 1);
-        BigInteger M = ((f1 * new BigRational(b)) - (f2 * new BigRational(a))).round();
+        BigInteger M = ((f1.multiply(new BigRational(b))).subtract(f2.multiply(new BigRational(a)))).round();
         BigInteger[] t = extended_gcd(a, b);
         BigInteger n1 = t[2].negate();
-        BigRational v = fracpart(new BigRational(n1*M) + f1, new BigRational(a));
+        BigRational v = fracpart((new BigRational(n1.multiply(M))).add(f1), new BigRational(a));
         //System.out.println(new BigRational(a) + ", " + v.doubleValue() + ", " + (new BigRational(n1*M) + f1).doubleValue() + ", " + ((new BigRational(n1*M) + f1)/a).doubleValue() + ", " + ((new BigRational(n1*M) + f1)/a).round());
-        BigRational phat = v / new BigRational(new BigInteger(Long.toString(factorial(P))) * a);
+        //BigRational phat = v / new BigRational(new BigInteger(Long.toString(factorial(P))) * a);
+        BigRational phat = v.divide(  new BigRational( new BigInteger(Long.toString(factorial(P))).multiply(a))  );
         return phat.doubleValue();
     }
 
     public static BigRational fracpart(BigRational x, BigRational a) {
-        return x - (a * new BigRational((x/a).round()));
+        return x.subtract(a.multiply(new BigRational((x.divide(a)).round())));
+        //return x - (a * new BigRational((x/a).round()));
     }
 }

@@ -1,9 +1,7 @@
-/*
- */
-package pubsim.poly;
+package poly;
 
-import flanagan.complex.Complex;
-import flanagan.math.FourierTransform;
+import pubsim.Complex;
+import pubsim.FFT;
 import pubsim.Util;
 import pubsim.VectorFunctions;
 
@@ -20,7 +18,7 @@ public class HAF extends AbstractPolynomialPhaseEstimator {
     final protected int n;
     final protected int[] tau;
     protected int num_samples;
-    protected FourierTransform fft;
+    protected FFT fft;
     protected Complex[] sig;
     
     /**Max number of iterations for the Newton step */
@@ -46,8 +44,8 @@ public class HAF extends AbstractPolynomialPhaseEstimator {
         if( tau.length != m-1 ) throw new ArrayIndexOutOfBoundsException("The number of lags must by m-1");
         this.tau = tau;
         int oversampled = 4;
-        sig = new Complex[FourierTransform.nextPowerOfTwo(oversampled * n)];
-        fft = new FourierTransform();
+        sig = new Complex[oversampled * n];
+        fft = new FFT(oversampled * n);
     }
 
     @Override
@@ -94,15 +92,13 @@ public class HAF extends AbstractPolynomialPhaseEstimator {
         if (M == 0) {
             Complex zsum = new Complex(0,0);
             for(int i = 0; i < x.length; i++) zsum = zsum.plus(x[i]);
-            return zsum.argRad() / (2 * Math.PI);
+            return zsum.phase() / (2 * Math.PI);
         }
 
         for (int i = 0; i < d.length; i++) sig[i] = new Complex(d[i]);
         for (int i = d.length; i < sig.length; i++) sig[i] = new Complex(0.0, 0.0);
 
-        fft.setData(sig);
-        fft.transform();
-        Complex[] ft = fft.getTransformedDataAsComplex();
+        Complex[] ft = fft.forward(sig);
 
         //note that the FFT is generally defined with exp(-jw) but
         //periodogram has exp(jw) so freq are -ve here.
@@ -111,7 +107,7 @@ public class HAF extends AbstractPolynomialPhaseEstimator {
         double f = 0.0;
         double fstep = 1.0 / ft.length;
         for (int i = 0; i < ft.length; i++) {
-            double p = ft[i].squareAbs();
+            double p = ft[i].abs2();
             if (p > maxp) {
                 maxp = p;
                 fhat = f;
@@ -160,8 +156,8 @@ public class HAF extends AbstractPolynomialPhaseEstimator {
             for (int i = 0; i < d.length; i++) {
                 double cosf = Math.cos(-2 * Math.PI * f * i);
                 double sinf = Math.sin(-2 * Math.PI * f * i);
-                double ur = d[i].getReal() * cosf - d[i].getImag() * sinf;
-                double ui = d[i].getImag() * cosf + d[i].getReal() * sinf;
+                double ur = d[i].re()* cosf - d[i].im() * sinf;
+                double ui = d[i].im() * cosf + d[i].re() * sinf;
                 double vr = 2 * Math.PI * i * ui;
                 double vi = -2 * Math.PI * i * ur;
                 double wr = 2 * Math.PI * i * vi;
@@ -226,10 +222,10 @@ public class HAF extends AbstractPolynomialPhaseEstimator {
     }
     
     public double calculateObjectiveFromPPT(double f, Complex[] d){
-        Complex sum = Complex.zero();
+        Complex sum = new Complex(0,0);
         for (int i = 0; i < d.length; i++) 
             sum = sum.plus(d[i].times(new Complex(Math.cos(-2 * Math.PI * f * i), Math.sin(-2 * Math.PI * f * i))));
-        return sum.squareAbs();
+        return sum.abs2();
     }
     
     /** Compute the HAF of order M and delay tau using the FFT, length is always a power of 2*/
@@ -238,9 +234,7 @@ public class HAF extends AbstractPolynomialPhaseEstimator {
         Complex[] d = PPT(M, x, tau);
         for (int i = 0; i < d.length; i++) sig[i] = new Complex(d[i]);
         for (int i = d.length; i < sig.length; i++) sig[i] = new Complex(0.0, 0.0);
-        fft.setData(sig);
-        fft.transform();
-        return fft.getTransformedDataAsComplex();
+        return fft.forward(sig);
     }
 
 }

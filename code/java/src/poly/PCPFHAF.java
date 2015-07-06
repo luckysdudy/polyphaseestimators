@@ -1,15 +1,15 @@
 /*
  * @author Robby McKilliam
  */
-package pubsim.poly;
+package poly;
 
 import Jama.Matrix;
 import pubsim.Complex;
 import static pubsim.Util.factorial;
 import pubsim.VectorFunctions;
 import static pubsim.VectorFunctions.prod;
-import pubsim.optimisation.Brent;
-import pubsim.optimisation.SingleVariateFunction;
+import org.mckilliam.optimisation.Brent;
+import org.mckilliam.optimisation.SingleVariateFunction;
 
 /**
  * The product CPF HAF estimator.  Maximises an objective function constructed by a

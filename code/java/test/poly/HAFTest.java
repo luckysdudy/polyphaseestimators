@@ -1,7 +1,7 @@
 /*
  */
 
-package pubsim.poly;
+package poly;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -100,7 +100,7 @@ public class HAFTest {
 
         HAF inst = new HAF(params.length,n);
 
-        double[] p = inst.estimate(siggen.getReal(), siggen.getImag());
+        double[] p = inst.estimate(siggen.real(), siggen.imag());
 
         System.out.println(p[a-1]);
 
@@ -127,7 +127,7 @@ public class HAFTest {
 
         HAF inst = new HAF(m,n);
 
-        double[] p = inst.estimate(siggen.getReal(), siggen.getImag());
+        double[] p = inst.estimate(siggen.real(), siggen.imag());
 
         System.out.println(VectorFunctions.print(p));
 
@@ -154,7 +154,7 @@ public class HAFTest {
 
         HAF inst = new HAF(m,n, new int[] {n/m+1, n/m-1});
 
-        double[] p = inst.estimate(siggen.getReal(), siggen.getImag());
+        double[] p = inst.estimate(siggen.real(), siggen.imag());
 
         System.out.println(VectorFunctions.print(p));
 
@@ -181,7 +181,7 @@ public class HAFTest {
 
         HAF inst = new HAF(m,n);
 
-        double[] p = inst.estimate(siggen.getReal(), siggen.getImag());
+        double[] p = inst.estimate(siggen.real(), siggen.imag());
 
         System.out.println(VectorFunctions.print(params));
         System.out.println(VectorFunctions.print(p));
@@ -203,7 +203,7 @@ public class HAFTest {
 
         siggen.generateReceivedSignal();
         flanagan.complex.Complex[] z = new flanagan.complex.Complex[n];
-        for (int i = 0; i < n; i++) z[i] = new flanagan.complex.Complex(siggen.getReal()[i], siggen.getImag()[i]);
+        for (int i = 0; i < n; i++) z[i] = new flanagan.complex.Complex(siggen.real()[i], siggen.imag()[i]);
         
         HAF inst = new HAF(m,n);
        

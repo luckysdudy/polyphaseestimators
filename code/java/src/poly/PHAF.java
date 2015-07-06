@@ -1,8 +1,8 @@
-package pubsim.poly;
+package poly;
 
-import flanagan.complex.Complex;
-import pubsim.optimisation.Brent;
-import pubsim.optimisation.SingleVariateFunction;
+import pubsim.Complex;
+import org.mckilliam.optimisation.Brent;
+import org.mckilliam.optimisation.SingleVariateFunction;
 import static pubsim.VectorFunctions.prod;
 
 /**
@@ -73,7 +73,7 @@ public class PHAF extends AbstractPolynomialPhaseEstimator {
     @Override
     public double[] estimate(double[] real, double[] imag) {
         for (int i = 0; i < n; i++) {
-            z[i] = new flanagan.complex.Complex(real[i], imag[i]);
+            z[i] = new Complex(real[i], imag[i]);
         }
         double[] p = new double[m + 1];
         p[m] = estimateM(z, m); //only does the highest order parameter at the moment;
@@ -146,7 +146,7 @@ public class PHAF extends AbstractPolynomialPhaseEstimator {
             double fhat = 0.0;
             double f = 0.0;
             for (int i = 0; i < ft.length; i++) {
-                double p = ft[i].squareAbs();
+                double p = ft[i].abs2();
                 if (p > maxp) {
                     maxp = p;
                     fhat = f;

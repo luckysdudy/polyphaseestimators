@@ -1,21 +1,16 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
-package pubsim.poly.dptspecialm2;
+package poly.dptspecialm2;
 
 import Jama.Matrix;
 import pubsim.Complex;
 import pubsim.VectorFunctions;
-import pubsim.optimisation.NewtonRaphson;
+import org.mckilliam.optimisation.NewtonRaphson;
 
 /**
  * Polynomial phase estimator that for m=2 that only searches the DPT region.
  * O(N^2logN) complexity.
  * @author Robby McKilliam
  */
-public class MaximumLikelihood extends pubsim.poly.MaximumLikelihood {
+public class MaximumLikelihood extends poly.MaximumLikelihood {
 
     Complex[] z;
     double[] realp, imagp;

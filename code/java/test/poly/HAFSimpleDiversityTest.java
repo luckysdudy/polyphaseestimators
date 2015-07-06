@@ -1,6 +1,6 @@
 /*
  */
-package pubsim.poly;
+package poly;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -55,7 +55,7 @@ public class HAFSimpleDiversityTest {
 
         HAFSimpleDiversity inst = new HAFSimpleDiversity(m,n,5,7);
 
-        double[] p = inst.estimate(siggen.getReal(), siggen.getImag());
+        double[] p = inst.estimate(siggen.real(), siggen.imag());
 
         System.out.println(VectorFunctions.print(p));
 
@@ -81,7 +81,7 @@ public class HAFSimpleDiversityTest {
         
         HAFSimpleDiversity inst = new HAFSimpleDiversity(m,n,6,7);
 
-        double[] p = inst.estimate(siggen.getReal(), siggen.getImag());
+        double[] p = inst.estimate(siggen.real(), siggen.imag());
 
         System.out.println(VectorFunctions.print(p));
 

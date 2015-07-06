@@ -3,12 +3,12 @@
  * @author Robby McKilliam
  */
 
-package pubsim.poly.bounds;
+package poly.bounds;
 
-import pubsim.distributions.circular.CircularRandomVariable;
-import pubsim.distributions.circular.ProjectedNormalDistribution;
-import pubsim.distributions.circular.VonMises;
-import pubsim.distributions.circular.WrappedUniform;
+import org.mckilliam.distributions.circular.CircularRandomVariable;
+import org.mckilliam.distributions.circular.ProjectedNormal;
+import org.mckilliam.distributions.circular.VonMises;
+import org.mckilliam.distributions.circular.WrappedUniform;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;

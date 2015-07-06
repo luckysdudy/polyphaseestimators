@@ -1,6 +1,6 @@
 /*
  */
-package pubsim.poly;
+package poly;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -9,7 +9,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import pubsim.VectorFunctions;
-import pubsim.distributions.GaussianNoise;
+import org.mckilliam.distributions.Gaussian;
 
 /**
  * @author Robby McKilliam
@@ -48,13 +48,13 @@ public class ZWTest {
 
         PolynomialPhaseSignal siggen = new PolynomialPhaseSignal(n);
         siggen.setParameters(params);
-        siggen.setNoiseGenerator(new GaussianNoise(0, 0.000001));
+        siggen.setNoiseGenerator(new Gaussian(0, 0.000001));
 
         siggen.generateReceivedSignal();
 
         ZW inst = new ZW(m,n,5,7);
 
-        double[] p = inst.estimate(siggen.getReal(), siggen.getImag());
+        double[] p = inst.estimate(siggen.real(), siggen.imag());
 
         System.out.println(VectorFunctions.print(p));
 
@@ -74,13 +74,13 @@ public class ZWTest {
 
         PolynomialPhaseSignal siggen = new PolynomialPhaseSignal(n);
         siggen.setParameters(params);
-        siggen.setNoiseGenerator(new GaussianNoise(0, 0.00001));
+        siggen.setNoiseGenerator(new Gaussian(0, 0.00001));
 
         siggen.generateReceivedSignal();
         
         ZW inst = new ZW(m,n,6,7);
 
-        double[] p = inst.estimate(siggen.getReal(), siggen.getImag());
+        double[] p = inst.estimate(siggen.real(), siggen.imag());
 
         System.out.println(VectorFunctions.print(params));
         System.out.println(VectorFunctions.print(p));

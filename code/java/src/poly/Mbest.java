@@ -1,10 +1,7 @@
-/*
- */
+package poly;
 
-package pubsim.poly;
-
-import pubsim.lattices.reduction.LLL;
-import pubsim.lattices.reduction.LatticeReduction;
+import org.mckilliam.lattices.reduction.LLL;
+import org.mckilliam.lattices.reduction.LatticeReduction;
 
 /**
  * @author Robby McKilliam
@@ -25,6 +22,6 @@ public class Mbest extends Babai {
      */
     public Mbest(int m, int n, int M, LatticeReduction lr) {
         super(m,n);
-        npalgorithm = new pubsim.lattices.decoder.Mbest(lattice,M,lr);
+        npalgorithm = new org.mckilliam.lattices.cvp.Mbest(lattice,M,lr);
     }
 }

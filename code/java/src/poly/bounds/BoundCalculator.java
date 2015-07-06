@@ -1,9 +1,4 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
-package pubsim.poly.bounds;
+package poly.bounds;
 
 import Jama.Matrix;
 import static pubsim.Util.powerSum;

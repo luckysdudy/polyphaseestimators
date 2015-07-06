@@ -1,6 +1,6 @@
-package pubsim.poly;
+package poly;
 
-import pubsim.lattices.decoder.SphereDecoderSchnorrEuchner;
+import org.mckilliam.lattices.cvp.SphereDecoderSchnorrEuchner;
 
 /**
  * Runs the VnmStarSampledEfficient nearest lattice point algorithm to

@@ -3,14 +3,14 @@
  * and open the template in the editor.
  */
 
-package pubsim.poly;
+package poly;
 
-import pubsim.poly.PolynomialPhaseEstimatorInterface;
-import pubsim.poly.BabaiTest;
-import pubsim.poly.PolynomialPhaseSignal;
+import poly.PolynomialPhaseEstimatorInterface;
+import poly.BabaiTest;
+import poly.PolynomialPhaseSignal;
 import Jama.Matrix;
 import pubsim.distributions.GaussianNoise;
-import pubsim.lattices.Vnmstar.VnmStar;
+import org.mckilliam.lattices.Vnmstar.VnmStar;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -64,7 +64,7 @@ public class BabaiTest {
 
         siggen.generateReceivedSignal();
         PolynomialPhaseEstimatorInterface inst = new Babai(m,n);
-        double[] p = inst.estimate(siggen.getReal(), siggen.getImag());
+        double[] p = inst.estimate(siggen.real(), siggen.imag());
 
         System.out.println(VectorFunctions.print(p));
 

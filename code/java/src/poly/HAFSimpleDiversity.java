@@ -1,10 +1,8 @@
-/*
- */
-package pubsim.poly;
+package poly;
 
 import bignums.BigInteger;
 import bignums.BigRational;
-import flanagan.complex.Complex;
+import pubsim.Complex;
 import static pubsim.Util.extended_gcd;
 import static pubsim.Util.factorial;
 import static pubsim.Util.gcd;
@@ -61,13 +59,13 @@ public class HAFSimpleDiversity extends AbstractPolynomialPhaseEstimator {
         BigInteger[] t = extended_gcd(a,b);
         BigRational n1 = new BigRational(t[1]);
         BigRational n2 = new BigRational(t[2]);
-        BigRational phat = new BigRational(f1,30) * n1 +  new BigRational(f2,30) * n2;
+        BigRational phat = (new BigRational(f1,30).multiply(n1)).add(new BigRational(f2,30).multiply(n2));
         return pubsim.Util.fracpart(phat.doubleValue())/factorial(P);
 //          return haf1.estimateM(z, i);
     }
     
     public static BigRational fracpart(BigRational x) {
-        return x - new BigRational(x.round());
+        return x.subtract(new BigRational(x.round()));
     }
     
 }

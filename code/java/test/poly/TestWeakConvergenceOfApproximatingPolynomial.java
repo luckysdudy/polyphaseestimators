@@ -1,13 +1,9 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-package pubsim.poly;
+package poly;
 
 import org.junit.*;
 import static pubsim.Util.fracpart;
-import pubsim.distributions.circular.CircularRandomVariable;
-import pubsim.distributions.circular.CircularUniform;
+import org.mckilliam.distributions.circular.CircularRandomVariable;
+import org.mckilliam.distributions.circular.CircularUniform;
 
 /**
  *
@@ -49,7 +45,7 @@ public class TestWeakConvergenceOfApproximatingPolynomial {
         
         for(long N = fromN; N < fromN + numruns; N++){
             double sum = 0.0;
-            for(int n = 0; n < N; n++) sum += polyn(rv.getNoise(),Math.round(Math.pow(N,1.0/2 + 0.01)));
+            for(int n = 0; n < N; n++) sum += polyn(rv.noise(),Math.round(Math.pow(N,1.0/2 + 0.01)));
             System.out.println("N = " + N + ", mean = " + (sum/N));
         }
                 

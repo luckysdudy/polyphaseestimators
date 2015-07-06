@@ -1,13 +1,11 @@
-/*
- */
-package pubsim.poly;
+package poly;
 
 import Jama.Matrix;
 import java.io.Serializable;
 import pubsim.VectorFunctions;
-import pubsim.lattices.Lattice;
-import pubsim.lattices.NearestPointAlgorithmInterface;
-import pubsim.lattices.decoder.SphereDecoder;
+import org.mckilliam.lattices.Lattice;
+import org.mckilliam.lattices.ClosestVectorInterface;
+import org.mckilliam.lattices.cvp.SphereDecoder;
 
 /**
  * This uses m nearest lattice point approach to remove the
@@ -19,7 +17,7 @@ public class AmbiguityRemover implements Serializable{
     protected int m;
     protected Matrix M;
     double[] p;
-    NearestPointAlgorithmInterface np;
+    ClosestVectorInterface np;
 
     protected AmbiguityRemover() {
     }
@@ -83,7 +81,7 @@ public class AmbiguityRemover implements Serializable{
         if (m+1 != p.length) {
             throw new RuntimeException("Parameter vector p is not the correct size.");
         }
-        np.nearestPoint(p);
+        np.closestPoint(p);
         double[] np = this.np.getLatticePoint();
 
         for (int i = 0; i < p.length; i++) {

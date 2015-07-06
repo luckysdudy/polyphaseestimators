@@ -1,9 +1,6 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+package poly;
 
-package pubsim.poly;
+import org.mckilliam.distributions.circular.CircularRandomVariable;
 
 /**
  * Like PolynommialPhaseSignal but the noise gets added to the phase.
@@ -13,8 +10,8 @@ public class CircularNoisePolynomialPhaseSignal extends PolynomialPhaseSignal{
 
     Double[] phasearray = new Double[0];
 
-    public CircularNoisePolynomialPhaseSignal(int N){
-        super(N);
+    public CircularNoisePolynomialPhaseSignal(int N, CircularRandomVariable noise){
+        super(N, noise);
     }
     
     /**
@@ -31,7 +28,7 @@ public class CircularNoisePolynomialPhaseSignal extends PolynomialPhaseSignal{
             double phase = 0.0;
             for(int j = 0; j < params.length; j++)
                 phase += Math.pow(t+1,j)*params[j];
-            double pnoise = noise.getNoise();
+            double pnoise = noise.noise();
             phasearray[t] = phase + pnoise;
             real[t] = Math.cos(2*Math.PI*(phase + pnoise));
             imag[t] = Math.sin(2*Math.PI*(phase + pnoise));

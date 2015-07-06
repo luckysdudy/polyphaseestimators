@@ -1,15 +1,10 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
-package pubsim.poly;
+package poly;
 
 import Jama.Matrix;
-import pubsim.lattices.util.PointInParallelepiped;
-import pubsim.optimisation.AutoDerivativeFunction;
-import pubsim.optimisation.FunctionAndDerivatives;
-import pubsim.optimisation.NewtonRaphson;
+import org.mckilliam.lattices.util.PointInParallelepiped;
+import org.mckilliam.optimisation.AutoDerivativeFunction;
+import org.mckilliam.optimisation.FunctionAndDerivatives;
+import org.mckilliam.optimisation.NewtonRaphson;
 import pubsim.Complex;
 import pubsim.VectorFunctions;
 import pubsim.fes.PeriodogramFFTEstimator;

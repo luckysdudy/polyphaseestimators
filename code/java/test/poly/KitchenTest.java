@@ -1,4 +1,4 @@
-package pubsim.poly;
+package poly;
 
 import pubsim.distributions.GaussianNoise;
 import org.junit.After;
@@ -7,8 +7,8 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import pubsim.VectorFunctions;
-import pubsim.poly.Kitchen;
-import pubsim.poly.PolynomialPhaseSignal;
+import poly.Kitchen;
+import poly.PolynomialPhaseSignal;
 import static org.junit.Assert.*;
 
 /**
@@ -55,7 +55,7 @@ public class KitchenTest {
 
         Kitchen inst = new Kitchen(m,n);
 
-        double[] p = inst.estimate(siggen.getReal(), siggen.getImag());
+        double[] p = inst.estimate(siggen.real(), siggen.imag());
 
         System.out.println(VectorFunctions.print(p));
 
@@ -81,7 +81,7 @@ public class KitchenTest {
 
         Kitchen inst = new Kitchen(a,n);
 
-        double[] p = inst.estimate(siggen.getReal(), siggen.getImag());
+        double[] p = inst.estimate(siggen.real(), siggen.imag());
 
         System.out.println(VectorFunctions.print(p));
 

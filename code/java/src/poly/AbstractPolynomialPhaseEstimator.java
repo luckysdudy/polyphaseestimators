@@ -1,6 +1,4 @@
-/*
- */
-package pubsim.poly;
+package poly;
 
 /**
  * Sets up polynomial phase estimators in a standard way

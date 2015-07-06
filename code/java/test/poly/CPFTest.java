@@ -1,6 +1,6 @@
 /*
  */
-package pubsim.poly;
+package poly;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -77,7 +77,7 @@ public class CPFTest {
         siggen.setParameters(params);
         siggen.setNoiseGenerator(new GaussianNoise(0, 0));
         siggen.generateReceivedSignal();
-        inst.estimate(siggen.getReal(), siggen.getImag());
+        inst.estimate(siggen.real(), siggen.imag());
         
         //check that maxCP(0) is twice the quadratic parameter
         assertEquals(inst.maxCP(0)/2, oparams[2], tol); 
@@ -104,7 +104,7 @@ public class CPFTest {
         siggen.setNoiseGenerator(new GaussianNoise(0, 0));
         siggen.generateReceivedSignal();
         
-        double[] phat = inst.estimate(siggen.getReal(), siggen.getImag());
+        double[] phat = inst.estimate(siggen.real(), siggen.imag());
         
         assertEquals(params[3], phat[3], tol);
         assertEquals(params[2], phat[2], tol);

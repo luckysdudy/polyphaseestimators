@@ -1,69 +1,53 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
-package pubsim.poly;
+package poly;
 
 import java.util.Random;
 import java.io.Serializable;
-import pubsim.SignalGenerator;
 import pubsim.VectorFunctions;
-import pubsim.distributions.NoiseGenerator;
+import org.mckilliam.distributions.RealRandomVariable;
 
 /**
  * Generates m polynomial phase signal with parameters specified
  * by the setParameters method.
  * @author Robby McKilliam
  */
-public class PolynomialPhaseSignal implements SignalGenerator<Double>{
+public class PolynomialPhaseSignal {
     
     protected double[] params;
     final protected double[] real;
     final protected double[] imag;
+    final protected int n;
+    final protected RealRandomVariable noise;
     
-    protected int n;
-    
-    protected NoiseGenerator<Double> noise;
-    
-    public PolynomialPhaseSignal(int N){
+    public PolynomialPhaseSignal(int N, RealRandomVariable noise){
         this.n = N;
         real = new double[n];
         imag = new double[n];
+        this.noise = noise;
     }
-
-    @Override
     public Double[] generateReceivedSignal() {
         for(int t = 0; t < n; t++){
             double phase = 0.0;
             for(int j = 0; j < params.length; j++)
                 phase += Math.pow(t+1,j)*params[j];
-            real[t] = Math.cos(2*Math.PI*(phase)) + noise.getNoise();
-            imag[t] = Math.sin(2*Math.PI*(phase)) + noise.getNoise();
+            real[t] = Math.cos(2*Math.PI*(phase)) + noise.noise();
+            imag[t] = Math.sin(2*Math.PI*(phase)) + noise.noise();
         }
         return null;
     }
 
-    @Override
-    public void setNoiseGenerator(NoiseGenerator<Double> noise) {
-        this.noise = noise;
-    }
-
-    @Override
-    public NoiseGenerator<Double> getNoiseGenerator() {
+    public RealRandomVariable getNoiseGenerator() {
         return noise;
     }
 
-    @Override
     public int getLength() {
         return n;
     }
     
     /** Return the noisy real component of the signal */
-    public double[] getReal() { return real; }
+    public double[] real() { return real; }
     
     /** Return the noisy imaginary component of the signal */
-    public double[] getImag() { return imag; }
+    public double[] imag() { return imag; }
     
     /** 
      * Set the parameters for the polynomial phase signal with phase
