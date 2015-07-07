@@ -36,7 +36,7 @@ public class CPF extends AbstractPolynomialPhaseEstimator {
         wreal = new double[N];
         wimag = new double[N];
         y = new Complex[N];
-        T = constructOsheaBasisTransformaton(m,N);
+        T = constructOsheaBasisTransformation(m,N);
         Tinv = T.inverse();
         //fes = new PeriodogramFFTEstimator(N);
     }
@@ -209,11 +209,11 @@ public class CPF extends AbstractPolynomialPhaseEstimator {
         return sum;
     }
 
-    public static Matrix constructOsheaBasisTransformaton(int m, int N) {
+    public static Matrix constructOsheaBasisTransformation(int m, int N) {
+        int k = -(N+1)/2;
         Matrix T = new Matrix(m+1,m+1);
         for(int t = 0; t <=m; t++) {
             for(int i = 0; i <= t; i++) {
-                int k = -(N+1)/2;
                 T.set(i,t, pubsim.Util.binom(t, i) * Math.pow(k, t-i) / 2.0 / Math.PI );          
             }
         }

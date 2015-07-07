@@ -46,7 +46,7 @@ public class CPFHAF extends AbstractPolynomialPhaseEstimator {
         cpf = new CPF(cpfn); 
         realcpf = new double[cpfn];
         imagcpf = new double[cpfn];
-        T = CPF.constructOsheaBasisTransformaton(m,n);
+        T = CPF.constructOsheaBasisTransformation(m,n);
         Tinv = T.inverse();
     }
     
