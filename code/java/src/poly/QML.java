@@ -50,7 +50,7 @@ public class QML extends AbstractPolynomialPhaseEstimator {
                 cf = f;
             }
         }
-        return cf;
+        return cf;  //could apply Brent's method or otherwise to optimise this, but's it's unlikely to be worth it
     }
     
     /** 
