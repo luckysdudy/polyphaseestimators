@@ -112,7 +112,7 @@ public class QMLTest {
         Complex[] y = new Complex[N];
         for(int n = 0; n < N; n++) y[n] = new Complex(siggen.real()[n], siggen.imag()[n]);
         try { //write STFT to a binary format suitable for gnuplot
-            FileOutputStream fos = new FileOutputStream("testdata/stftimageplotdata");
+            FileOutputStream fos = new FileOutputStream("tdata/stftimageplotdata");
             BufferedOutputStream bos = new BufferedOutputStream(fos);
             writeFloatToStream(bos,N);
             for(int t = 0; t < N; t++) writeFloatToStream(bos,t);
@@ -127,7 +127,7 @@ public class QMLTest {
         }
         
         try { //write maximiser of STFT to file
-            BufferedWriter file = new BufferedWriter(new FileWriter(new File("testdata/stftmax")));
+            BufferedWriter file = new BufferedWriter(new FileWriter(new File("tdata/stftmax")));
              for(int t = 0; t < N; t++) file.write(t + "\t" + QML.max_stft(t, h, y) + "\n");
              file.close();
         } catch (IOException ex) {
