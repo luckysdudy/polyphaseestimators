@@ -19,6 +19,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import org.mckilliam.distributions.Gaussian;
 import pubsim.Complex;
+import pubsim.VectorFunctions;
 
 /**
  *
@@ -47,6 +48,25 @@ public class QMLTest {
     
     public static double diff_complex(Complex x, Complex y){
         return (x.minus(y)).abs();
+    }
+    
+        /**
+     * Test of estimate method, of class HAF.
+     */
+    @Test
+    public void testEstimate() {
+        System.out.println("testEstimate");
+
+        int n = 64;
+        double[] params = {0.11, 0.05002, 0.0205};
+        int m = params.length-1;
+        PolynomialPhaseSignal siggen = new PolynomialPhaseSignal(n, new Gaussian(0, 0.00001), params);
+        siggen.generateReceivedSignal();
+        QML inst = new QML(m,n,8);
+        double[] p = inst.estimate(siggen.real(), siggen.imag());
+        System.out.println(VectorFunctions.print(p));
+        assertTrue(VectorFunctions.distance_between(p, params) < 0.001);
+
     }
         
     /**

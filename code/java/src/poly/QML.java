@@ -1,7 +1,9 @@
 package poly;
 
 import Jama.Matrix;
+import org.mckilliam.lattices.Vnmstar.HilbertMatrix;
 import pubsim.Complex;
+import pubsim.VectorFunctions;
 
 /**
  * This is the Quasi maximum likelihood (QML) estimator from
@@ -17,22 +19,45 @@ public class QML extends AbstractPolynomialPhaseEstimator {
     
     public final int N;
     public final double h;
-
-    protected final double[] wh; //this stores the maxima of the short-term Fourier transform
     
-    public QML(int N, int m, double h){
+    protected final Complex[] x; //
+    protected final double[] p; //array for storing resulting polynomial phase estimates
+    protected final double[] wh; //this stores the maxima of the short-term Fourier transform
+    protected final double[] wh_unwrapped; //store unwrapped maxima
+    protected final Matrix K; //projection matrix into the space of polynomials (for polynomial regression)
+    
+    public QML(int m, int N, double h){
         super(m);
         this.N = N;
         this.h = h;
         wh = new double[N];
+        x = new Complex[N];
+        wh_unwrapped = new double[N];
+        K = new HilbertMatrix(m+1,N).KDouble();
+        p = new double[m+1];
     }
 
     @Override
     public double[] estimate(double[] real, double[] imag) {
+        for(int n = 0; n < N; n++) x[n] = new Complex(real[n], imag[n]);
         
         //compute maximum of short term Fourier transform at each sample.
+        for(int n = 0; n < N; n++) wh[n] = max_stft(n,h,x); 
         
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        //unwrap the maxima
+        wh_unwrapped[0] = wh[0];
+        for(int n = 1; n < N; n++) {
+            double delta = wh[n] - wh[n-1];
+            if(delta > 1) wh_unwrapped[n] = wh[n] - 1;
+            else if(delta < 1) wh_unwrapped[n] = wh[n] + 1;
+            else wh_unwrapped[n] = wh[n];
+        } 
+        
+        //compute the parameters (polynomial regression)
+        VectorFunctions.matrixMultVector(K, wh_unwrapped, p); 
+        
+        //mod back to identifiable region and return estimates
+        return ambiguityRemover.disambiguate(p); 
     }
     
     /**

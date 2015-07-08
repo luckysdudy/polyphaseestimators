@@ -38,7 +38,6 @@ public class Babai extends AbstractPolynomialPhaseEstimator {
         p = new double[m+1];
         this.n = n;
         M = lattice.getMMatrix();
-        Matrix Mt = M.transpose();
         //System.out.println(Mt.times(M).inverse().cond());
         K = new HilbertMatrix(m+1,n).KDouble();
     }
