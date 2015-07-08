@@ -2,6 +2,7 @@ package poly;
 
 import Jama.Matrix;
 import org.mckilliam.lattices.Vnmstar.HilbertMatrix;
+import org.mckilliam.optimisation.NewtonRaphson;
 import pubsim.Complex;
 import pubsim.VectorFunctions;
 
@@ -20,11 +21,13 @@ public class QML extends AbstractPolynomialPhaseEstimator {
     public final int N;
     public final double h;
     
-    protected final Complex[] x; //
-    protected final double[] p; //array for storing resulting polynomial phase estimates
+    protected final Complex[] x;
+    protected double[] afreq;
+    protected double[] a; //array for storing returned polynomial phase parameters
     protected final double[] wh; //this stores the maxima of the short-term Fourier transform
     protected final double[] wh_unwrapped; //store unwrapped maxima
     protected final Matrix K; //projection matrix into the space of polynomials (for polynomial regression)
+    protected final Matrix Kfreq; //projection matrix for polynomial regression on instantaneous frequency
     
     public QML(int m, int N, double h){
         super(m);
@@ -34,7 +37,9 @@ public class QML extends AbstractPolynomialPhaseEstimator {
         x = new Complex[N];
         wh_unwrapped = new double[N];
         K = new HilbertMatrix(m+1,N).KDouble();
-        p = new double[m+1];
+        Kfreq = new HilbertMatrix(m,N).KDouble();
+        afreq = new double[m];
+        a = new double[m+1];
     }
 
     @Override
@@ -44,20 +49,57 @@ public class QML extends AbstractPolynomialPhaseEstimator {
         //compute maximum of short term Fourier transform at each sample.
         for(int n = 0; n < N; n++) wh[n] = max_stft(n,h,x); 
         
-        //unwrap the maxima
-        wh_unwrapped[0] = wh[0];
-        for(int n = 1; n < N; n++) {
-            double delta = wh[n] - wh[n-1];
-            if(delta > 1) wh_unwrapped[n] = wh[n] - 1;
-            else if(delta < 1) wh_unwrapped[n] = wh[n] + 1;
-            else wh_unwrapped[n] = wh[n];
-        } 
+        for(int n = 0; n < N; n++) wh_unwrapped[n] = wh[n];
+//        //unwrap the maxima
+//        wh_unwrapped[0] = wh[0];
+//        for(int n = 1; n < N; n++) {
+//            double delta = wh[n] - wh[n-1];
+//            if(delta > 1) wh_unwrapped[n] = wh[n] - 1;
+//            else if(delta < 1) wh_unwrapped[n] = wh[n] + 1;
+//            else wh_unwrapped[n] = wh[n];
+//        } 
         
-        //compute the parameters (polynomial regression)
-        VectorFunctions.matrixMultVector(K, wh_unwrapped, p); 
+        //polynomial regression on unwrapped instantaneous frequency
+        VectorFunctions.matrixMultVector(Kfreq, wh_unwrapped, afreq); 
+        for(int i = 0; i < m; i++) afreq[i] = afreq[i]/(i+1); //undo multipliers from derivative
         
-        //mod back to identifiable region and return estimates
-        return ambiguityRemover.disambiguate(p); 
+        System.out.println(VectorFunctions.print(afreq));
+        
+        //dechirp signal to obtain phase estimate
+        Complex sum = new Complex(0,0);
+        for(int n = 0; n < N; n++){
+            Complex dn = x[n];
+            for(int i = 1; i <= m; i++) {
+                Complex phase = new Complex.UnitCircle(-2*Math.PI*Math.pow(n+1, i)*afreq[i-1]);
+                dn = phase.multiply(dn);
+            }
+            sum = sum.add(dn);
+         }
+        a[0] = sum.phase()/2/Math.PI;
+        for(int i = 1; i <= m; i++) a[i] = afreq[i-1];
+        
+        a = refine(a, real, imag);
+        
+        //mod back to identifiable region and return estimates. Shouldn't be necessary, but won't hurt
+        return ambiguityRemover.disambiguate(a);
+    }
+
+    /// Returns refined polynomial phase estimator.  Uses Newton-Raphson method
+    protected double[] refine(double[] a, double[] real, double[] imag) throws ArithmeticException {
+        MaximumLikelihood.PolynomialPhaseLikelihood func
+                = new MaximumLikelihood.PolynomialPhaseLikelihood(real, imag);
+        NewtonRaphson newtonRaphson
+                = new NewtonRaphson(func);
+        
+        //refine the best parameter using Newton's method
+        Matrix params = new Matrix(m+1,1);
+        for(int i = 0; i <= m; i++) params.set(i,0,a[i]);
+        try {
+            Matrix p =  newtonRaphson.maximise(params);
+            return VectorFunctions.unpackRowise(p);
+        }catch(Exception e){
+            throw new ArithmeticException(e.getMessage());
+        }
     }
     
     /**

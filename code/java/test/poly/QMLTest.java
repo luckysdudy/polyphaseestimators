@@ -58,7 +58,7 @@ public class QMLTest {
         System.out.println("testEstimate");
 
         int n = 64;
-        double[] params = {0.11, 0.05002, 0.0205};
+        double[] params = {0.11, 0.05002, 0.00105};
         int m = params.length-1;
         PolynomialPhaseSignal siggen = new PolynomialPhaseSignal(n, new Gaussian(0, 0.00001), params);
         siggen.generateReceivedSignal();
