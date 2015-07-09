@@ -56,7 +56,8 @@ public class QMLTest {
     @Test
     public void testEstimate() {
         System.out.println("testEstimate");
-
+        
+        {
         int n = 64;
         double[] params = {0.11, 0.05002, 0.00105};
         int m = params.length-1;
@@ -66,7 +67,20 @@ public class QMLTest {
         double[] p = inst.estimate(siggen.real(), siggen.imag());
         System.out.println(VectorFunctions.print(p));
         assertTrue(VectorFunctions.distance_between(p, params) < 0.001);
-
+        }
+        
+        {
+            int n=199;
+            double[] params = {0.25, 0.25, 6.28140703517588E-4, 1.0521619824415208E-6};
+        int m = params.length-1;
+        PolynomialPhaseSignal siggen = new PolynomialPhaseSignal(n, new Gaussian(0, 0.00001), params);
+        siggen.generateReceivedSignal();
+        QML inst = new QML(m,n,12);
+        double[] p = inst.estimate(siggen.real(), siggen.imag());
+        System.out.println(VectorFunctions.print(p));
+        assertTrue(VectorFunctions.distance_between(p, params) < 0.001);
+        }
+        
     }
         
     /**
@@ -96,45 +110,55 @@ public class QMLTest {
         assertTrue( Math.abs(QML.max_stft(2.0, h, x) - 0.0) < tol);
       }
 
-//    /**
-//     * Writes stft of a polynomial phase signal to file for the purpose of ploting (with gnuplot or otherwise)
-//     */
-//    @Test
-//    public void testWriteSTFTtoFile() {
-//        System.out.println("Write stft to file");
-//        int N = 256;
-//        double h =12;
-//        double[] b = {1.0/10, -2.0/10, -1.0/200, 1.0/50000};
-//        //double noisevar = 1.0/2.0; //SNR = 1
-//        double noisevar = 0.0; //SNR is infinite
-//        PolynomialPhaseSignal siggen = new PolynomialPhaseSignal(N, new Gaussian(0,noisevar), b);
-//        siggen.generateReceivedSignal();
-//        Complex[] y = new Complex[N];
-//        for(int n = 0; n < N; n++) y[n] = new Complex(siggen.real()[n], siggen.imag()[n]);
-//        try { //write STFT to a binary format suitable for gnuplot
-//            FileOutputStream fos = new FileOutputStream("tdata/stftimageplotdata");
-//            BufferedOutputStream bos = new BufferedOutputStream(fos);
-//            writeFloatToStream(bos,N);
-//            for(int t = 0; t < N; t++) writeFloatToStream(bos,t);
-//            double fstep = 1.0/h/4.0; //4 times oversampling in frequency dimension
-//            for(double f = 0.5; f > -0.5; f -= fstep) {
-//                writeFloatToStream(bos,(float)f);
-//                for(int t = 0; t < N; t++) writeFloatToStream(bos,(float)QML.stft(t, f, h, y).abs());
-//            }
-//            bos.close();
-//        } catch (IOException ex) {
-//            fail("Failed to open file");
-//        }
-//        
-//        try { //write maximiser of STFT to file
-//            BufferedWriter file = new BufferedWriter(new FileWriter(new File("tdata/stftmax")));
-//             for(int t = 0; t < N; t++) file.write(t + "\t" + QML.max_stft(t, h, y) + "\n");
-//             file.close();
-//        } catch (IOException ex) {
-//            fail("Failed to open file");
-//        }
-//        
-//      }
+    /**
+     * Writes stft of a polynomial phase signal to file for the purpose of ploting (with gnuplot or otherwise)
+     */
+    @Test
+    public void testWriteSTFTtoFile() {
+        System.out.println("Write stft to file");
+        {
+            double[] b = {0.11, 0.05002, 0.00105};
+            writeSTFTToFile(64, 0.0, b, 8, "m2nowrapping");
+        }
+        {
+            double[] b = {1.0/10, -2.0/10, -1.0/200, 1.0/50000};
+            writeSTFTToFile(256, 0.0, b, 12, "m3case1");
+        }
+        {
+            double[] b = {0.25, 0.25, 6.28140703517588E-4, 1.0521619824415208E-6};
+            writeSTFTToFile(199, 0.0, b, 12, "m3case2");
+        }
+        
+      }
+
+    private void writeSTFTToFile(int N, double noisevar, double[] b, double h, String name) {
+        PolynomialPhaseSignal siggen = new PolynomialPhaseSignal(N, new Gaussian(0,noisevar), b);
+        siggen.generateReceivedSignal();
+        Complex[] y = new Complex[N];
+        for(int n = 0; n < N; n++) y[n] = new Complex(siggen.real()[n], siggen.imag()[n]);
+        try { //write STFT to a binary format suitable for gnuplot
+            FileOutputStream fos = new FileOutputStream("tdata/" + name + "data");
+            BufferedOutputStream bos = new BufferedOutputStream(fos);
+            writeFloatToStream(bos,N);
+            for(int t = 0; t < N; t++) writeFloatToStream(bos,t);
+            double fstep = 1.0/h/4.0; //4 times oversampling in frequency dimension
+            for(double f = 0.5; f > -0.5; f -= fstep) {
+                writeFloatToStream(bos,(float)f);
+                for(int t = 0; t < N; t++) writeFloatToStream(bos,(float)QML.stft(t, f, h, y).abs());
+            }
+            bos.close();
+        } catch (IOException ex) {
+            fail("Failed to open file");
+        }
+        
+        try { //write maximiser of STFT to file
+            BufferedWriter file = new BufferedWriter(new FileWriter(new File("tdata/" + name + "max")));
+            for(int t = 0; t < N; t++) file.write(t + "\t" + QML.max_stft(t, h, y) + "\n");
+            file.close();
+        } catch (IOException ex) {
+            fail("Failed to open file");
+        }
+    }
 
     //Write in little endian format (stupid java)
     public static void writeFloatToStream(BufferedOutputStream bos, float f) throws IOException{

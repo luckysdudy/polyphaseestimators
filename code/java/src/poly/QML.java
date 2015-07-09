@@ -49,21 +49,12 @@ public class QML extends AbstractPolynomialPhaseEstimator {
         //compute maximum of short term Fourier transform at each sample.
         for(int n = 0; n < N; n++) wh[n] = max_stft(n,h,x); 
         
-        for(int n = 0; n < N; n++) wh_unwrapped[n] = wh[n];
-//        //unwrap the maxima
-//        wh_unwrapped[0] = wh[0];
-//        for(int n = 1; n < N; n++) {
-//            double delta = wh[n] - wh[n-1];
-//            if(delta > 1) wh_unwrapped[n] = wh[n] - 1;
-//            else if(delta < 1) wh_unwrapped[n] = wh[n] + 1;
-//            else wh_unwrapped[n] = wh[n];
-//        } 
+        //unwrap wh
+        unwrap(wh, wh_unwrapped); 
         
         //polynomial regression on unwrapped instantaneous frequency
         VectorFunctions.matrixMultVector(Kfreq, wh_unwrapped, afreq); 
         for(int i = 0; i < m; i++) afreq[i] = afreq[i]/(i+1); //undo multipliers from derivative
-        
-        System.out.println(VectorFunctions.print(afreq));
         
         //dechirp signal to obtain phase estimate
         Complex sum = new Complex(0,0);
@@ -82,6 +73,18 @@ public class QML extends AbstractPolynomialPhaseEstimator {
         
         //mod back to identifiable region and return estimates. Shouldn't be necessary, but won't hurt
         return ambiguityRemover.disambiguate(a);
+    }
+
+    /// Compute uwrapped x and return in y
+    protected void unwrap(double[] x, double[] y) {
+        y[0] = x[0];
+        double c = 0;
+        for(int n = 1; n < N; n++) {
+            double delta = x[n] - x[n-1];
+            if(delta > 0.5) c--;
+            else if(delta < -0.5) c++;
+            y[n] = x[n] + c;
+        }
     }
 
     /// Returns refined polynomial phase estimator.  Uses Newton-Raphson method

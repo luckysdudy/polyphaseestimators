@@ -1,0 +1,79 @@
+\documentclass[a4paper,10pt]{article}
+
+\usepackage{mathbf-abbrevs}
+
+\usepackage{amsmath,amsfonts,amssymb, amsthm, bm}
+
+\usepackage[square,comma,numbers,sort&compress]{natbib}
+
+\usepackage{ifpdf}
+\ifpdf
+  \usepackage[pdftex]{graphicx}
+  %\usepackage{thumbpdf}
+  \usepackage[naturalnames]{hyperref}
+\else
+	\usepackage{graphicx}% standard graphics package for inclusion of
+		      % images and eps files into LaTeX document
+\fi
+
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.8}
+\usetikzlibrary{pgfplots.groupplots}
+
+
+\newcommand{\reals}{{\mathbb R}}
+\newcommand{\ints}{{\mathbb Z}}
+\newcommand{\br}[1]{{\left( #1 \right)}}
+\newcommand{\sqbr}[1]{{\left[ #1 \right]}}
+\newcommand{\cubr}[1]{{\left\{ #1 \right\}}}
+\newcommand{\scubr}[1]{{\{ #1 \}}}
+\newcommand{\abr}[1]{\left< #1 \right>}
+\newcommand{\abs}[1]{\left\vert #1 \right\vert}
+\newcommand{\sabs}[1]{\vert #1 \vert}
+\newcommand{\floor}[1]{{\left\lfloor #1 \right\rfloor}}
+\newcommand{\ceiling}[1]{{\left\lceil #1 \right\rceil}}
+\newcommand{\ceil}[1]{\lceil #1 \rceil}
+\newcommand{\round}[1]{{\left\lceil #1 \right\rfloor}}
+\newcommand{\magn}[1]{\left\| #1 \right\|}
+\newcommand{\fracpart}[1]{\left\langle #1 \right\rangle}
+\newcommand{\sfracpart}[1]{\langle #1 \rangle}
+
+
+\title{Simulations with polynomial phase estimators}
+\author{Robby McKilliam}
+
+\begin{document}
+
+\maketitle
+
+
+
+\begin{figure}[t]
+  \centering 
+  \begin{tikzpicture}
+    \selectcolormodel{gray}
+    \begin{axis}[font=\footnotesize,xmode=log,ymode=log,height=14cm,width=12cm,ylabel={MSE}, legend style={draw=none, fill=none, legend pos=north east, inner xsep = 1pt, inner ysep = 1pt, nodes = {inner sep=0.05pt, text depth = 0.05cm}},xlabel={SNR (dB)}]
+	% \addplot[dashed] table {code/data/LeastSquaresA};
+	\addplot[mark=o,only marks,mark options={scale= 0.5}] table {code/data/HAFm3smallp3};
+\addplot[mark=*,only marks,mark options={scale= 0.5}] table {code/data/QMLm3smallp3};
+ %       \addplot[mark=*,only marks,mark options={scale= 0.5}] table {code/data/LeastSquaresB};
+		
+% \addplot[mark=o,only marks,mark options={scale= 0.5}] table {code/data/CRTA};
+%	\addplot[solid] table {code/data/CRTA};
+	% \addplot[solid] table {code/data/LeastSquaresB};
+%	\addplot[dashed] table {code/data/CRTB};
+%	\addplot[dotted] table {code/data/TwoStageCRTB};
+	\legend{HAF,QML}
+   \end{axis}  
+  \end{tikzpicture}   
+
+  \caption{Simulations with polynomial phase estimators}\label{fig:simulations}   
+\end{figure} 
+
+
+ \bibliographystyle{../../../bib/IEEEbib}
+ \bibliography{../../../bib/bib}
+
+\end{document}
