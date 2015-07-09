@@ -31,8 +31,6 @@ val bp3 = (0 to 3).map( k => 0.25/pubsim.Util.factorial(k) ).toArray //3rd order
 val sp5 = (0 to 5).map( k => 0.25/pubsim.Util.factorial(k)/npow(N,k-1) ).toArray //5th order paramater that work for the HAF
 val bp5 = (0 to 5).map( k => 0.25/pubsim.Util.factorial(k) ).toArray //5th order paramater that do not work for the HAF
 
-sp3.foreach(println(_))
-
 //lags for the PHAF estimator
 val tau3 = Array(
 Array(66,66),
@@ -59,7 +57,7 @@ val starttime = (new java.util.Date).getTime
 //runsim(-5 to 15, sp3, N, iters, () => new HAF(3,N), "HAFm3small")
 //runsim(-5 to 15, bp3, N, iters, () => new HAF(3,N), "HAFm3big")
 //runsim(-5 to 15, sp3, N, iters, () => new CPF(N), "CPFm3small")
-runsim(-5 to 15, sp3, N, iters, () => new QML(3,N,12), "QMLm3small")
+//runsim(-5 to 15, sp3, N, iters, () => new QML(3,N,12), "QMLm3small")
 //runsim(-5 to 15, bp3, N, iters, () => new CPF(N), "CPFm3big")
 //runsim(-5 to 15, sp3, N, iters, () => new Babai(3,N, new HKZ()), "Babaim3small")
 //runsim(-5 to 15, bp3, N, iters, () => new Babai(3,N, new HKZ()), "Babaim3big")

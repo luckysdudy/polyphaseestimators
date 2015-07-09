@@ -63,7 +63,7 @@ public class QMLTest {
         int m = params.length-1;
         PolynomialPhaseSignal siggen = new PolynomialPhaseSignal(n, new Gaussian(0, 0.00001), params);
         siggen.generateReceivedSignal();
-        QML inst = new QML(m,n,8);
+        STFTUnwrappingEstimator inst = new STFTUnwrappingEstimator(m,n,8);
         double[] p = inst.estimate(siggen.real(), siggen.imag());
         System.out.println(VectorFunctions.print(p));
         assertTrue(VectorFunctions.distance_between(p, params) < 0.001);
@@ -75,7 +75,7 @@ public class QMLTest {
         int m = params.length-1;
         PolynomialPhaseSignal siggen = new PolynomialPhaseSignal(n, new Gaussian(0, 0.00001), params);
         siggen.generateReceivedSignal();
-        QML inst = new QML(m,n,12);
+        STFTUnwrappingEstimator inst = new STFTUnwrappingEstimator(m,n,12);
         double[] p = inst.estimate(siggen.real(), siggen.imag());
         System.out.println(VectorFunctions.print(p));
         assertTrue(VectorFunctions.distance_between(p, params) < 0.001);
@@ -92,10 +92,10 @@ public class QMLTest {
         System.out.println("stft");
         double h = 6.0;
         Complex[] x = {new Complex(1,0), new Complex(1,0), new Complex(1,0), new Complex(1,0), new Complex(1,0)};
-        assertTrue(diff_complex(new Complex(5,0), QML.stft(2.0, 0.0, h, x)) < tol);
-        assertTrue(diff_complex(new Complex(0,0), QML.stft(2.0, 1.0/5, h, x)) < tol);
-        assertTrue(diff_complex(new Complex(3,0), QML.stft(-0.1, 0.0, h, x)) < tol);
-        assertTrue(diff_complex(new Complex(4,0), QML.stft(3.1, 0.0, h, x)) < tol);
+        assertTrue(diff_complex(new Complex(5,0), STFTUnwrappingEstimator.stft(2.0, 0.0, h, x)) < tol);
+        assertTrue(diff_complex(new Complex(0,0), STFTUnwrappingEstimator.stft(2.0, 1.0/5, h, x)) < tol);
+        assertTrue(diff_complex(new Complex(3,0), STFTUnwrappingEstimator.stft(-0.1, 0.0, h, x)) < tol);
+        assertTrue(diff_complex(new Complex(4,0), STFTUnwrappingEstimator.stft(3.1, 0.0, h, x)) < tol);
     }
     
     /**
@@ -107,7 +107,7 @@ public class QMLTest {
         System.out.println("max stft");
         double h = 6.0;
         Complex[] x = {new Complex(1,0), new Complex(1,0), new Complex(1,0), new Complex(1,0), new Complex(1,0)};
-        assertTrue( Math.abs(QML.max_stft(2.0, h, x) - 0.0) < tol);
+        assertTrue( Math.abs(STFTUnwrappingEstimator.max_stft(2.0, h, x) - 0.0) < tol);
       }
 
     /**
@@ -144,7 +144,7 @@ public class QMLTest {
             double fstep = 1.0/h/4.0; //4 times oversampling in frequency dimension
             for(double f = 0.5; f > -0.5; f -= fstep) {
                 writeFloatToStream(bos,(float)f);
-                for(int t = 0; t < N; t++) writeFloatToStream(bos,(float)QML.stft(t, f, h, y).abs());
+                for(int t = 0; t < N; t++) writeFloatToStream(bos,(float)STFTUnwrappingEstimator.stft(t, f, h, y).abs());
             }
             bos.close();
         } catch (IOException ex) {
@@ -153,7 +153,7 @@ public class QMLTest {
         
         try { //write maximiser of STFT to file
             BufferedWriter file = new BufferedWriter(new FileWriter(new File("tdata/" + name + "max")));
-            for(int t = 0; t < N; t++) file.write(t + "\t" + QML.max_stft(t, h, y) + "\n");
+            for(int t = 0; t < N; t++) file.write(t + "\t" + STFTUnwrappingEstimator.max_stft(t, h, y) + "\n");
             file.close();
         } catch (IOException ex) {
             fail("Failed to open file");

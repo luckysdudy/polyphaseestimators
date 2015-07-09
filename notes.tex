@@ -48,23 +48,16 @@
 
 \maketitle
 
-
-
 \begin{figure}[t]
   \centering 
   \begin{tikzpicture}
     \selectcolormodel{gray}
-    \begin{axis}[font=\footnotesize,xmode=log,ymode=log,height=14cm,width=12cm,ylabel={MSE}, legend style={draw=none, fill=none, legend pos=north east, inner xsep = 1pt, inner ysep = 1pt, nodes = {inner sep=0.05pt, text depth = 0.05cm}},xlabel={SNR (dB)}]
-	% \addplot[dashed] table {code/data/LeastSquaresA};
+    \begin{axis}[font=\footnotesize,ymode=log,height=14cm,width=12cm,ylabel={MSE}, legend style={draw=none, fill=none, legend pos=north east, inner xsep = 1pt, inner ysep = 1pt, nodes = {inner sep=0.05pt, text depth = 0.05cm}},xlabel={SNR (dB)}]
 	\addplot[mark=o,only marks,mark options={scale= 0.5}] table {code/data/HAFm3smallp3};
-\addplot[mark=*,only marks,mark options={scale= 0.5}] table {code/data/QMLm3smallp3};
- %       \addplot[mark=*,only marks,mark options={scale= 0.5}] table {code/data/LeastSquaresB};
-		
-% \addplot[mark=o,only marks,mark options={scale= 0.5}] table {code/data/CRTA};
-%	\addplot[solid] table {code/data/CRTA};
-	% \addplot[solid] table {code/data/LeastSquaresB};
-%	\addplot[dashed] table {code/data/CRTB};
-%	\addplot[dotted] table {code/data/TwoStageCRTB};
+        \addplot[mark=*,only marks,mark options={scale= 0.5}] table {code/data/QMLm3smallp3};
+        \addplot[mark=square,only marks,mark options={scale= 0.5}] table {code/data/Mbestm3smallp3};
+        \addplot[solid] table {code/data/crbm3p3};
+	\addplot[dashed] table {code/data/lsucltm3p3};
 	\legend{HAF,QML}
    \end{axis}  
   \end{tikzpicture}   
