@@ -57,13 +57,12 @@ val starttime = (new java.util.Date).getTime
 //runsim(-5 to 15, sp3, N, iters, () => new HAF(3,N), "HAFm3small")
 //runsim(-5 to 15, bp3, N, iters, () => new HAF(3,N), "HAFm3big")
 //runsim(-5 to 15, sp3, N, iters, () => new CPF(N), "CPFm3small")
-val H = (2 to 40).toArray
-runsim(-5 to 15, sp3, N, iters, () => new QML(3,N,H), "QMLm3small")
 //runsim(-5 to 15, bp3, N, iters, () => new CPF(N), "CPFm3big")
 //runsim(-5 to 15, sp3, N, iters, () => new Babai(3,N, new HKZ()), "Babaim3small")
 //runsim(-5 to 15, bp3, N, iters, () => new Babai(3,N, new HKZ()), "Babaim3big")
-//runsim(-5 to 15, sp3, N, iters, () => new Mbest(3,N, 20*N, new HKZ()), "Mbestm3small")
+runsim(-5 to 15, sp3, N, iters, () => new Mbest(3,N, 20*N, new HKZ()), "Mbestm3small")
 //runsim(-5 to 15, bp3, N, iters, () => new Mbest(3,N, 20*N, new HKZ()), "Mbestm3big")
+runsim(-5 to 15, sp3, N, iters, () => new QML(3,N,(2 to 40).toArray), "QMLm3small")
 //runcrb(-5 to 15, 3, N, "crbm3")
 //runlsuclt(-5 to 15, 3, N, "lsucltm3")
 
