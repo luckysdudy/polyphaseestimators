@@ -22,7 +22,7 @@ import org.mckilliam.lattices.reduction.None
 import org.mckilliam.lattices.reduction.HKZ
 import org.mckilliam.lattices.reduction.LLL
 
-val iters = 200
+val iters = 2000
 val N = 199
 def npow(x : Int, t : Int) : Double = if(t<=0) 1.0 else scala.math.pow(x,t)
 //def npow(x : Int, t : Int) = scala.math.pow(x,t)
@@ -57,14 +57,15 @@ val starttime = (new java.util.Date).getTime
 //runsim(-5 to 15, sp3, N, iters, () => new HAF(3,N), "HAFm3small")
 //runsim(-5 to 15, bp3, N, iters, () => new HAF(3,N), "HAFm3big")
 //runsim(-5 to 15, sp3, N, iters, () => new CPF(N), "CPFm3small")
-//runsim(-5 to 15, sp3, N, iters, () => new QML(3,N,12), "QMLm3small")
+val H = (2 to 40).toArray
+runsim(-5 to 15, sp3, N, iters, () => new QML(3,N,H), "QMLm3small")
 //runsim(-5 to 15, bp3, N, iters, () => new CPF(N), "CPFm3big")
 //runsim(-5 to 15, sp3, N, iters, () => new Babai(3,N, new HKZ()), "Babaim3small")
 //runsim(-5 to 15, bp3, N, iters, () => new Babai(3,N, new HKZ()), "Babaim3big")
-runsim(-5 to 15, sp3, N, iters, () => new Mbest(3,N, 20*N, new HKZ()), "Mbestm3small")
+//runsim(-5 to 15, sp3, N, iters, () => new Mbest(3,N, 20*N, new HKZ()), "Mbestm3small")
 //runsim(-5 to 15, bp3, N, iters, () => new Mbest(3,N, 20*N, new HKZ()), "Mbestm3big")
-runcrb(-5 to 15, 3, N, "crbm3")
-runlsuclt(-5 to 15, 3, N, "lsucltm3")
+//runcrb(-5 to 15, 3, N, "crbm3")
+//runlsuclt(-5 to 15, 3, N, "lsucltm3")
 
 //runsim(-5 to 35 by 2, bp3, N, iters, () => new ZW(3,N,N/3,N/3+1), "ZWm3big")
 //runsim(-5 to 35 by 2, bp3, N, iters, () => new Babai(3,N, new HKZ()), "Babaim3bigrange")
@@ -85,7 +86,7 @@ runcrb(5 to 25, 5, N, "crbm5")
 runlsuclt(5 to 25, 5, N, "lsucltm5")
  */
 
-runsim(-5 to 15, sp3, N, iters, () => new PHAF.PHAFfft(3,N,tau3), "PHAFm3small")
+//runsim(-5 to 15, sp3, N, iters, () => new PHAF.PHAFfft(3,N,tau3), "PHAFm3small")
 //runsim(-5 to 15, bp3, N, iters, () => new PHAF.PHAFfft(3,N,tau3), "PHAFm3big")
 //runsim(5 to 25, sp5, N, iters, () => new PHAF.PHAFfft(5,N,tau5), "PHAFm5small")
 //runsim(5 to 25, bp5, N, iters, () => new PHAF.PHAFfft(5,N,tau5), "PHAFm5big")

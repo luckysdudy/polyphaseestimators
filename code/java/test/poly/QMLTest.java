@@ -58,27 +58,27 @@ public class QMLTest {
         System.out.println("testSTFTEstimate");
         
         {
-        int n = 64;
-        double[] params = {0.11, 0.05002, 0.00105};
-        int m = params.length-1;
-        PolynomialPhaseSignal siggen = new PolynomialPhaseSignal(n, new Gaussian(0, 0.00001), params);
-        siggen.generateReceivedSignal();
-        STFTUnwrappingEstimator inst = new STFTUnwrappingEstimator(m,n,8);
-        double[] p = inst.estimate(siggen.real(), siggen.imag());
-        System.out.println(VectorFunctions.print(p));
-        assertTrue(VectorFunctions.distance_between(p, params) < 0.1);
+            int n = 64;
+            double[] params = {0.11, 0.05002, 0.00105};
+            int m = params.length - 1;
+            PolynomialPhaseSignal siggen = new PolynomialPhaseSignal(n, new Gaussian(0, 0.00001), params);
+            siggen.generateReceivedSignal();
+            STFTUnwrappingEstimator inst = new STFTUnwrappingEstimator(m, n, 8);
+            double[] p = inst.estimate(siggen.real(), siggen.imag());
+            System.out.println(VectorFunctions.print(p));
+            assertTrue(VectorFunctions.distance_between(p, params) < 0.1);
         }
-        
+
         {
-            int n=199;
+            int n = 199;
             double[] params = {0.25, 0.25, 6.28140703517588E-4, 1.0521619824415208E-6};
-        int m = params.length-1;
-        PolynomialPhaseSignal siggen = new PolynomialPhaseSignal(n, new Gaussian(0, 0.00001), params);
-        siggen.generateReceivedSignal();
-        STFTUnwrappingEstimator inst = new STFTUnwrappingEstimator(m,n,12);
-        double[] p = inst.estimate(siggen.real(), siggen.imag());
-        System.out.println(VectorFunctions.print(p));
-        assertTrue(VectorFunctions.distance_between(p, params) < 0.1);
+            int m = params.length - 1;
+            PolynomialPhaseSignal siggen = new PolynomialPhaseSignal(n, new Gaussian(0, 0.00001), params);
+            siggen.generateReceivedSignal();
+            STFTUnwrappingEstimator inst = new STFTUnwrappingEstimator(m, n, 12);
+            double[] p = inst.estimate(siggen.real(), siggen.imag());
+            System.out.println(VectorFunctions.print(p));
+            assertTrue(VectorFunctions.distance_between(p, params) < 0.1);
         }
         
     }
