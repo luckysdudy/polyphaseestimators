@@ -77,7 +77,7 @@ public class STFTUnwrappingEstimator extends AbstractPolynomialPhaseEstimator {
         a[0] = sum.phase()/2/Math.PI;
         for(int i = 1; i <= m; i++) a[i] = afreq[i-1];
         
-        //a = refine(a, real, imag);
+        //a = MaximumLikelihood.refine(a, real, imag);
         
         //mod back to identifiable region and return estimates.
         return ambiguityRemover.disambiguate(a);
@@ -128,26 +128,6 @@ public class STFTUnwrappingEstimator extends AbstractPolynomialPhaseEstimator {
             sum = sum.add(term);
         }
         return sum;
-    }
-    
-    /// Returns refined polynomial phase estimator.  Uses Newton-Raphson method
-    protected double[] refine(double[] a, double[] real, double[] imag) throws ArithmeticException {
-        MaximumLikelihood.PolynomialPhaseLikelihood func
-                = new MaximumLikelihood.PolynomialPhaseLikelihood(real, imag);
-        NewtonRaphson newtonRaphson
-                = new NewtonRaphson(func);
-        
-        //refine the best parameter using Newton's method
-        Matrix params = new Matrix(m+1,1);
-        for(int i = 0; i <= m; i++) params.set(i,0,a[i]);
-        try {
-            Matrix p =  newtonRaphson.maximise(params);
-            return VectorFunctions.unpackRowise(p);
-        }catch(Exception e){
-            //if Newton's method fails to converge just return the initial parameters.
-            //This usually occurs when the initial guess is nowhere near the true parameters.
-            return a; 
-        }
     }
     
     /**

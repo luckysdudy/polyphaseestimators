@@ -54,8 +54,8 @@ public class QMLTest {
      * Test of estimate method, of class HAF.
      */
     @Test
-    public void testEstimate() {
-        System.out.println("testEstimate");
+    public void testSTFTEstimate() {
+        System.out.println("testSTFTEstimate");
         
         {
         int n = 64;
@@ -66,7 +66,7 @@ public class QMLTest {
         STFTUnwrappingEstimator inst = new STFTUnwrappingEstimator(m,n,8);
         double[] p = inst.estimate(siggen.real(), siggen.imag());
         System.out.println(VectorFunctions.print(p));
-        assertTrue(VectorFunctions.distance_between(p, params) < 0.001);
+        assertTrue(VectorFunctions.distance_between(p, params) < 0.1);
         }
         
         {
@@ -78,7 +78,43 @@ public class QMLTest {
         STFTUnwrappingEstimator inst = new STFTUnwrappingEstimator(m,n,12);
         double[] p = inst.estimate(siggen.real(), siggen.imag());
         System.out.println(VectorFunctions.print(p));
-        assertTrue(VectorFunctions.distance_between(p, params) < 0.001);
+        assertTrue(VectorFunctions.distance_between(p, params) < 0.1);
+        }
+        
+    }
+    
+     /**
+     * Test of estimate method, of class HAF.
+     */
+    @Test
+    public void testQMLEstimate() {
+        System.out.println("testQMLEstimate");
+        
+        {
+            int n = 64;
+            int[] H = {2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14};
+            double[] params = {0.11, 0.05002, 0.00105};
+            int m = params.length - 1;
+            PolynomialPhaseSignal siggen = new PolynomialPhaseSignal(n, new Gaussian(0, 0.00001), params);
+            siggen.generateReceivedSignal();
+            QML inst = new QML(m, n, H);
+            double[] p = inst.estimate(siggen.real(), siggen.imag());
+            System.out.println(VectorFunctions.print(p));
+            assertTrue(VectorFunctions.distance_between(p, params) < 0.001);
+        }
+
+        {
+            int n = 199;
+            double[] params = {0.25, 0.25, 6.28140703517588E-4, 1.0521619824415208E-6};
+            int [] H = new int[40];
+            for(int i = 0; i < H.length; i++) H[i] = i+2;
+            int m = params.length - 1;
+            PolynomialPhaseSignal siggen = new PolynomialPhaseSignal(n, new Gaussian(0, 0.00001), params);
+            siggen.generateReceivedSignal();
+            QML inst = new QML(m, n, H);
+            double[] p = inst.estimate(siggen.real(), siggen.imag());
+            System.out.println(VectorFunctions.print(p));
+            assertTrue(VectorFunctions.distance_between(p, params) < 0.001);
         }
         
     }

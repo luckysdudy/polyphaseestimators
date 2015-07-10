@@ -51,10 +51,7 @@ public class MaximumLikelihood extends AbstractPolynomialPhaseEstimator{
     public double[] estimate(double[] real, double[] imag) {
         if(N != real.length) throw new RuntimeException("Data length does not equal " + N);
 
-        PolynomialPhaseLikelihood func
-                = new PolynomialPhaseLikelihood(real, imag);
-        NewtonRaphson newtonRaphson
-                = new NewtonRaphson(func);
+        PolynomialPhaseLikelihood func = new PolynomialPhaseLikelihood(real, imag);
 
         PointInParallelepiped points
                 = new PointInParallelepiped(
@@ -118,15 +115,32 @@ public class MaximumLikelihood extends AbstractPolynomialPhaseEstimator{
         //p = VectorFunctions.columnMatrix(parray);
 
         //refine the best parameter using Newton's method
-        try{
-            p = newtonRaphson.maximise(p);
-        }catch(Exception e){
-            throw new ArithmeticException(e.getMessage());
-        }
+        double[] a = refine(VectorFunctions.unpackRowise(p),real,imag);
         //System.out.println(dist);
         //System.out.println(D);
         //System.out.println(VectorFunctions.print(p));
-        return ambiguityRemover.disambiguate(VectorFunctions.unpackRowise(p));
+        return ambiguityRemover.disambiguate(a);
+    }
+    
+    /// Returns refined polynomial phase estimator.  Uses Newton-Raphson method
+    protected static double[] refine(double[] a, double[] real, double[] imag) throws ArithmeticException {
+        int m = a.length - 1;
+        MaximumLikelihood.PolynomialPhaseLikelihood func
+                = new MaximumLikelihood.PolynomialPhaseLikelihood(real, imag);
+        NewtonRaphson newtonRaphson
+                = new NewtonRaphson(func);
+        
+        //refine the best parameter using Newton's method
+        Matrix params = new Matrix(m+1,1);
+        for(int i = 0; i <= m; i++) params.set(i,0,a[i]);
+        try {
+            Matrix p =  newtonRaphson.maximise(params);
+            return VectorFunctions.unpackRowise(p);
+        }catch(Exception e){
+            //if Newton's method fails to converge just return the initial parameters.
+            //This usually occurs when the initial guess is nowhere near the true parameters.
+            return a; 
+        }
     }
 
     public static class PolynomialPhaseLikelihoodAutoDerivative
