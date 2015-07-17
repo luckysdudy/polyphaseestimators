@@ -55,7 +55,8 @@
     \begin{axis}[font=\footnotesize,ymode=log,height=14cm,width=12cm,ylabel={MSE}, legend style={draw=none, fill=none, legend pos=north east},xlabel={SNR (dB)},ymax=1.2e-9,ymin=5e-17]
 	\addplot[mark=o,only marks,mark options={scale= 0.75}] table {code/data/HAFm3smallp3};
         \addplot[mark=*,only marks,mark options={scale= 0.4}] table {code/data/QMLm3smallp3};
-        \addplot[mark=square,only marks,mark options={scale= 0.75}] table {code/data/Mbestm3smallp3};
+        %\addplot[mark=square,only marks,mark options={scale= 0.75}] table {code/data/Mbestm3smallp3};
+        \addplot[mark=square,only marks,mark options={scale= 0.75}] table {code/data/LSUm3smallp3};
         \addplot[mark=triangle,only marks,mark options={scale= 0.75}] table {code/data/PHAFm3smallp3};
         \addplot[mark=x,only marks,mark options={scale= 0.75}] table {code/data/CPFm3smallp3};
         \addplot[solid] table {code/data/crbm3p3};
@@ -63,6 +64,7 @@
 	\legend{HAF,QML,LSU,PHAF, CPF, CRB, LSU (theory)}
    \end{axis}  
   \end{tikzpicture}   
+ 
 
   \caption{Simulations with polynomial phase estimators}\label{fig:simulations}   
 \end{figure} 

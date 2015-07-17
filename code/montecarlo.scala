@@ -21,8 +21,10 @@ import org.mckilliam.distributions.circular.ProjectedNormal
 import org.mckilliam.lattices.reduction.None
 import org.mckilliam.lattices.reduction.HKZ
 import org.mckilliam.lattices.reduction.LLL
+import Jama.Matrix
+import java.io.IOException;
 
-val iters = 100
+val iters = 2000
 val N = 199
 def npow(x : Int, t : Int) : Double = if(t<=0) 1.0 else scala.math.pow(x,t)
 //def npow(x : Int, t : Int) = scala.math.pow(x,t)
@@ -52,13 +54,28 @@ Array(17,23),
 Array(13,29)
 )
 
-/** Returns a LSU estimator with basis and transformation matrices read from file */
-def LSUEstimator(m : Int, n : Int) : PolynomialPhaseEstimatorInterface = {
-  val basisfilename = "LSU_basis_N_" + N + "_m_" + m
-  val B = pubsim.VectorFunctions.readPARIGPFormatFromFile(basisfilename)
-  val transformfilename = "LSU_transform_N_" + N + "_m_" + m
-  val B = pubsim.VectorFunctions.readPARIGPFormatFromFile(transformfilename)
+
+def thrownofile(filename : String, N : Int, m : Int) = {
+  new RuntimeException("file " + filename + " does not exist. You need to run the PARI/GP scipt basisdata/genbasis.gp after setting N = " + N + " and m = " + m)
 }
+
+/** Returns a LSU estimator with basis and transformation matrices read from file */
+def LatticeUwrappingEstimator(m : Int, n : Int, K : Int, t : String) : PolynomialPhaseEstimatorInterface = {
+  val basisfilename = "basisdata/" + t + "_basis_N_" + N + "_m_" + m
+  var B : Matrix = null 
+  try { B = pubsim.VectorFunctions.readPARIGPFormatFromFile(basisfilename) }
+  catch { case ioe: IOException => thrownofile(basisfilename,N,m) }
+  val transformfilename = "basisdata/" + t + "_transform_N_" + N + "_m_" + m
+  var T : Matrix = null
+  try { T = pubsim.VectorFunctions.readPARIGPFormatFromFile(transformfilename) }
+  catch { case ioe: IOException => thrownofile(transformfilename,N,m) }
+
+  val lattice = new org.mckilliam.lattices.Lattice(B)
+  val cvp = new org.mckilliam.lattices.cvp.Mbest(lattice,K,new None())
+  return new poly.LatticeUnwrapping(m,N,cvp,T)
+}
+def LSUEstimator(m : Int, n : Int, K : Int) = LatticeUwrappingEstimator(m,N,K,"LSU")
+
 
 val starttime = (new java.util.Date).getTime
 
@@ -69,6 +86,7 @@ val starttime = (new java.util.Date).getTime
 //runsim(-5 to 15, sp3, N, iters, () => new Babai(3,N, new HKZ()), "Babaim3small")
 //runsim(-5 to 15, bp3, N, iters, () => new Babai(3,N, new HKZ()), "Babaim3big")
 //runsim(-5 to 15, sp3, N, iters, () => new Mbest(3,N, 20*N, new HKZ()), "Mbestm3small")
+runsim(-5 to 15, sp3, N, iters, () => LSUEstimator(3,N,20*N), "LSUm3small")
 //runsim(-5 to 15, bp3, N, iters, () => new Mbest(3,N, 20*N, new HKZ()), "Mbestm3big")
 //runsim(-5 to 15, sp3, N, iters, () => new QML(3,N,(2 to 40).toArray), "QMLm3small")
 //runcrb(-5 to 15, 3, N, "crbm3")
