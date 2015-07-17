@@ -52,6 +52,14 @@ Array(17,23),
 Array(13,29)
 )
 
+/** Returns a LSU estimator with basis and transformation matrices read from file */
+def LSUEstimator(m : Int, n : Int) : PolynomialPhaseEstimatorInterface = {
+  val basisfilename = "LSU_basis_N_" + N + "_m_" + m
+  val B = pubsim.VectorFunctions.readPARIGPFormatFromFile(basisfilename)
+  val transformfilename = "LSU_transform_N_" + N + "_m_" + m
+  val B = pubsim.VectorFunctions.readPARIGPFormatFromFile(transformfilename)
+}
+
 val starttime = (new java.util.Date).getTime
 
 //runsim(-5 to 15, sp3, N, iters, () => new HAF(3,N), "HAFm3small")
