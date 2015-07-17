@@ -16,11 +16,11 @@ import org.mckilliam.lattices.reduction.LatticeReduction;
  */
 public class Babai extends AbstractPolynomialPhaseEstimator {
 
-    final protected double[] ya,  p;
+    final protected double[] ya,  ymu, p;
     final protected int n;
     final protected VnmStar lattice;
     protected ClosestVectorInterface npalgorithm;
-    final protected Matrix M,  K;
+    final protected Matrix K;
     
     public Babai(int m, int n){
         this(m,n,new LLL());
@@ -35,9 +35,9 @@ public class Babai extends AbstractPolynomialPhaseEstimator {
         lattice = new VnmStar(m, n - m - 1);
         npalgorithm = new org.mckilliam.lattices.cvp.Babai(lattice, lr);
         ya = new double[n];
+        ymu = new double[n];
         p = new double[m+1];
         this.n = n;
-        M = lattice.getMMatrix();
         //System.out.println(Mt.times(M).inverse().cond());
         K = new HilbertMatrix(m+1,n).KDouble();
     }
@@ -52,7 +52,6 @@ public class Babai extends AbstractPolynomialPhaseEstimator {
         npalgorithm.closestPoint(ya);
         double[] u = npalgorithm.getIndex();
 
-        double[] ymu = new double[ya.length];
         for (int i = 0; i < u.length; i++) {
             ymu[i] = ya[i] - u[i];
         }
