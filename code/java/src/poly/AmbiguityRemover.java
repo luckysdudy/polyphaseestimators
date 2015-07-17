@@ -4,7 +4,7 @@ import Jama.Matrix;
 import java.io.Serializable;
 import pubsim.VectorFunctions;
 import org.mckilliam.lattices.Lattice;
-import org.mckilliam.lattices.ClosestVectorInterface;
+import org.mckilliam.lattices.cvp.ClosestVectorInterface;
 import org.mckilliam.lattices.cvp.SphereDecoder;
 
 /**

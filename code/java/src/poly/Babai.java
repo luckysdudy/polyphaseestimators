@@ -4,7 +4,7 @@ package poly;
 
 import Jama.Matrix;
 import pubsim.VectorFunctions;
-import org.mckilliam.lattices.ClosestVectorInterface;
+import org.mckilliam.lattices.cvp.ClosestVectorInterface;
 import org.mckilliam.lattices.Vnmstar.HilbertMatrix;
 import org.mckilliam.lattices.Vnmstar.VnmStar;
 import org.mckilliam.lattices.reduction.LLL;
